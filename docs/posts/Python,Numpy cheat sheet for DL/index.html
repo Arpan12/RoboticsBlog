@@ -9,7 +9,7 @@
 <meta name="author" content="Arpan Pallar">
 <meta name="dcterms.date" content="2023-06-10">
 
-<title>RoboticsBlog - PPO Implementation for Coders</title>
+<title>RoboticsBlog - Python and Numpy cheat sheet for DL</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -96,8 +62,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -144,9 +108,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">PPO Implementation for Coders</h1>
+      <h1 class="title">Python and Numpy cheat sheet for DL</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">RL</div>
+                <div class="quarto-category">DL</div>
                 <div class="quarto-category">Code</div>
                 <div class="quarto-category">Python</div>
               </div>
@@ -184,50 +148,306 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>PPO is state of the art algorithm for DeepRL. We wont go in depth into theory but focus on implementation.</p>
-<section id="promise" class="level3">
-<h3 class="anchored" data-anchor-id="promise">Promise</h3>
-<p>After reading till the end of the blog, you should be able to implement PPO for <strong>discrete action space</strong> based environments.</p>
+<section id="np.zeros" class="level2">
+<h2 class="anchored" data-anchor-id="np.zeros">np.zeros</h2>
+<p><strong>numpy.zeros(<em>shape</em>, <em>dtype=<u>float</u></em>, <em>order=<u>‘C’</u></em>, <em>*</em>, <em>like=<u>None</u></em>)</strong><br>
+Return a new array of given shape and type, filled with zeros.<br>
+</p>
+<dl>
+<dt><strong>Parameters:</strong></dt>
+<dd>
+<dl>
+<dt><strong>shapeint or tuple of ints</strong></dt>
+<dd>
+<p>Shape of the new array, e.g., <code>(2, 3)</code> or <code>2</code>.</p>
+</dd>
+<dt><strong>dtypedata-type, optional</strong></dt>
+<dd>
+<p>The desired data-type for the array, e.g., <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int8" title="numpy.int8"><strong><code>numpy.int8</code></strong></a>. Default is <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64"><strong><code>numpy.float64</code></strong></a>.</p>
+</dd>
+<dt><strong>order{‘C’, ‘F’}, optional, default: ‘C’</strong></dt>
+<dd>
+<p>Whether to store multi-dimensional data in row-major (C-style) or column-major (Fortran-style) order in memory.</p>
+</dd>
+<dt><strong>likearray_like, optional</strong></dt>
+<dd>
+<p>Reference object to allow the creation of arrays which are not NumPy arrays. If an array-like passed in as <code>like</code> supports the <code>__array_function__</code> protocol, the result will be defined by it. In this case, it ensures the creation of an array object compatible with that passed in via this argument.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<pre><code>np.zeros(5)
+array([ 0.,  0.,  0.,  0.,  0.])  # default is numpy.float64</code></pre>
+<pre><code>&gt;&gt;&gt;np.zeros((5,), dtype=int) #if you want to create a 1D array
+array([0, 0, 0, 0, 0])
+
+&gt;&gt;&gt;np.zeros((5,1))
+array([[0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.]])
+       
+       
+&gt;&gt;&gt;s = (2,2)
+&gt;&gt;&gt;np.zeros(s)
+array([[ 0.,  0.],
+       [ 0.,  0.]]
+       
+#Multi-dim array 
+&gt;&gt; np.zeros((4,3,2))  #a row of 2 element repeated 3 times-&gt; 3*2 array-&gt;repeated 4 times to give 4*3*2 array
+
+array([[[0., 0.],
+        [0., 0.],
+        [0., 0.]],
+
+       [[0., 0.],
+        [0., 0.],
+        [0., 0.]],
+
+       [[0., 0.],
+        [0., 0.],
+        [0., 0.]],
+
+       [[0., 0.],
+        [0., 0.],
+        [0., 0.]]])</code></pre>
 </section>
-<section id="theory" class="level3">
-<h3 class="anchored" data-anchor-id="theory">Theory</h3>
-<p>PPO is a policy gradient method</p>
-<p><span class="math inline">\(\pi(u|x)\to\)</span>our current policy. <strong>This in deep RL is usually approximate by a Neural Net called actor net</strong></p>
-<p><span class="math inline">\(g(x_n,u_n)\to\)</span> cost incurred, we get from the environment for taking action</p>
-<p><span class="math inline">\(V_\pi(x) = g(x,\pi(x)) + \alpha*V_\pi(x+1)\)</span> = value function for policy <span class="math inline">\(\pi\)</span> . <strong>This in deep RL is usually approximate by a Neural Net called Critic net</strong></p>
-<p>if <span class="math inline">\(J(\theta) = V_\pi(x_0)\)</span> approximate value function for an episode starting at x0 following policy <span class="math inline">\(\pi(\theta)\)</span> ,We can decrease <span class="math inline">\(J(\theta)\)</span> by gradient descent <span class="math inline">\(\theta_{new} = \theta - \gamma*\Delta J(\theta)\)</span></p>
-<p>so writing more mathematically</p>
-<p><span class="math inline">\(J(\theta) = E_{u_n}\sim \pi_{\theta}[\sum_{n=0}^N\alpha^n*g(x_n,u_n)]\)</span></p>
-<p>we are able to show(proof not important)</p>
-<p><span class="math inline">\(\Delta_\theta J(\theta) = E[\sum_{n=0}^N\Psi_n\Delta_nlog\ \pi(u_n|x_n,\theta)]\)</span></p>
-<p>which is similar to minimizing:</p>
-<p><span class="math inline">\(min_\theta E[\Psi_n*log\ \pi(u_n|x_n,|\theta)]\)</span></p>
-<p><strong>This is what we would use for actor loss and minimize. In Practice since we get rewards from the Env so we put a negative sign before</strong> <span class="math inline">\(\Psi_n\)</span> <strong>so that we maximize the reward gain</strong></p>
-<p><strong>For critic loss we take</strong> <span class="math inline">\(\Delta t_d^2\)</span> where <span class="math inline">\(t_d = g(x_n,u_n)+\gamma*V(x_{n+1)}-V(x_n)\)</span></p>
-<p>for</p>
-<ol type="1">
-<li><p>ReInforce: <span class="math inline">\(\Psi_n = G_n = \sum_{k=n}^N \alpha^k * g(x_k,u_k)\)</span></p></li>
-<li><p>ReInforce with baseLine: <span class="math inline">\(\Psi_n = G_n-V(x_n)\)</span></p></li>
-<li><p>Actor-Critic: <span class="math inline">\(\Psi_n = g(x_n,u_n)+\alpha*V(x_{n+1})-V(x_n)\)</span></p></li>
-<li><p>PPO: <span class="math inline">\(\Psi_n = A_t = \sum_{t=k}^N \lambda *\mu*( Q(x_n,u_n)-V(x_n))\)</span></p>
-<p>where <span class="math inline">\(Q(x_n,u_n) = g(x_n,u_n)+\gamma*V({x_{n+1}})\)</span></p>
-<p>but for PPO we approximate the log gradient even further by <span class="math inline">\(min_\theta E[\sum_{n=0}^N A_n\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old})}]\)</span></p></li>
-</ol>
-<p>For PPO we generally clip the gradient by limiting between 1-<span class="math inline">\(\epsilon\)</span> and 1+<span class="math inline">\(\epsilon\)</span></p>
-<p><span class="math inline">\(min_\theta E[\sum_{n=0}^N min(A_n\ \frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},clip(\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},1-\epsilon,1+\epsilon)A_n]\)</span></p>
-<p>issue to address:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
+<section id="get-and-set-numpy-array-value" class="level2">
+<h2 class="anchored" data-anchor-id="get-and-set-numpy-array-value">Get and Set Numpy Array Value</h2>
+<pre><code>x = np.zeros((4,3,2))
+#just like you would do in Python list or C array
+x[3][1][0]=1</code></pre>
+<p>Negative Indexing</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*vSMvExLCUQtAwn_-SQoDeQ.png" class="img-fluid"></p>
 </section>
-<section id="implementation" class="level3">
-<h3 class="anchored" data-anchor-id="implementation">Implementation</h3>
-<p>Batches and How to generate them</p>
-<p>compute the advantage</p>
-<p>loss function</p>
+<section id="np.zeros_like" class="level2">
+<h2 class="anchored" data-anchor-id="np.zeros_like">np.zeros_like</h2>
+<dl>
+<dt><strong>numpy.zeros_like(<em>a</em>, <em>dtype=<u>None</u></em>, <em>order=<u>‘K’</u></em>, <em>subok=<u>True</u></em>, <em>shape=<u>None</u></em>)<a href="https://github.com/numpy/numpy/blob/v1.24.0/numpy/core/numeric.py#L77-L143">[source]</a></strong></dt>
+<dd>
+<p>Return an array of zeros with the same shape and type as a given array.</p>
+<dl>
+<dt><strong>Parameters:</strong></dt>
+<dd>
+<dl>
+<dt><strong>aarray_like</strong></dt>
+<dd>
+<p>The shape and data-type of <em>a</em> define these same attributes of the returned array.</p>
+</dd>
+<dt><strong>dtypedata-type, optional</strong></dt>
+<dd>
+<p>Overrides the data type of the result.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<pre><code>&gt;&gt;&gt;x = np.arange(6)}
+&gt;&gt;&gt;x = x.reshape((2, 3))
+&gt;&gt;&gt;x
+array([[0, 1, 2],
+       [3, 4, 5]])
+&gt;&gt;&gt;np.zeros_like(x)
+array([[0, 0, 0],
+       [0, 0, 0]])</code></pre>
+</section>
+<section id="np.ones" class="level2">
+<h2 class="anchored" data-anchor-id="np.ones">np.ones:</h2>
+<p>everything similar to np.zeros</p>
+<pre><code>np.ones((2, 1))
+array([[1.],
+       [1.]])</code></pre>
+</section>
+<section id="np.eye" class="level2">
+<h2 class="anchored" data-anchor-id="np.eye">np.eye:</h2>
+<dl>
+<dt><strong>numpy.eye(<em>N</em>, <em>M=None</em>, <em>k=0</em>, <em>dtype=&lt;class ‘float’&gt;</em>, <em>order=‘C’</em>, <em>*</em>, <em>like=None</em>)</strong></dt>
+<dd>
+<p>Return a 2-D array with ones on the diagonal and zeros elsewhere.</p>
+<dl>
+<dt><strong>Parameters:</strong></dt>
+<dd>
+<dl>
+<dt><strong>Nint</strong></dt>
+<dd>
+<p>Number of rows in the output.</p>
+</dd>
+<dt><strong>Mint, optional</strong></dt>
+<dd>
+<p>Number of columns in the output. If None, defaults to <em>N</em>.</p>
+</dd>
+<dt><strong>kint, optional</strong></dt>
+<dd>
+<p>Index of the diagonal: 0 (the default) refers to the main diagonal, a positive value refers to an upper diagonal, and a negative value to a lower diagonal.</p>
+</dd>
+<dt><strong>dtypedata-type, optional</strong></dt>
+<dd>
+<p>Data-type of the returned array.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<pre><code>&gt;&gt;&gt;np.eye(2, dtype=int)
+array([[1, 0],
+       [0, 1]])
+&gt;&gt;&gt; np.eye(3, k=1)
+array([[0.,  1.,  0.],
+       [0.,  0.,  1.],
+       [0.,  0.,  0.]])</code></pre>
+</section>
+<section id="reversedrangen" class="level2">
+<h2 class="anchored" data-anchor-id="reversedrangen">reversed(range(n))</h2>
+<p>iterate in reverse ie. n-1,n-2,…0</p>
+</section>
+<section id="np.random.shuffle" class="level2">
+<h2 class="anchored" data-anchor-id="np.random.shuffle">np.random.shuffle</h2>
+<dl>
+<dt><strong>random.shuffle(<em>x</em>)</strong></dt>
+<dd>
+<p>Modify a sequence in-place by shuffling its contents.</p>
+<p>This function only shuffles the array along the first axis of a multi-dimensional array. The order of sub-arrays is changed but their contents remains the same.</p>
+</dd>
+</dl>
+<pre><code>arr = np.arange(10)
+&gt;&gt;&gt; np.random.shuffle(arr)
+&gt;&gt;&gt; arr
+[1 7 5 2 9 4 3 6 0 8] # random
+
+# works for multi-D array also
+
+arr = np.arange(9).reshape((3, 3))
+np.random.shuffle(arr)
+arr
+array([[3, 4, 5], # random
+       [6, 7, 8],
+       [0, 1, 2]])</code></pre>
+</section>
+<section id="np.arange" class="level2">
+<h2 class="anchored" data-anchor-id="np.arange">np.arange</h2>
+<pre><code>&gt;&gt;&gt;np.arange(6) # 1D array
+array([0, 1, 2, 3, 4, 5])</code></pre>
+</section>
+<section id="np.reshape" class="level2">
+<h2 class="anchored" data-anchor-id="np.reshape">np.reshape</h2>
+<dl>
+<dt><strong>numpy.reshape(<em>a</em>, <em>newshape</em>, <em>order=<u>‘C’</u></em>)</strong></dt>
+<dd>
+<p>Gives a new shape to an array without changing its data.</p>
+</dd>
+<dt><strong>Parameters:</strong></dt>
+<dd>
+<dl>
+<dt><strong>aarray_like</strong></dt>
+<dd>
+<p>Array to be reshaped.</p>
+</dd>
+<dt><strong>newshapeint or tuple of ints</strong></dt>
+<dd>
+<p>The new shape should be compatible with the original shape. If an integer, then the result will be a 1-D array of that length. One shape dimension can be -1. In this case, the value is inferred from the length of the array and remaining dimensions.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<pre><code>&gt;&gt;&gt;a = np.arange(6).reshape((3, 2))}
+&gt;&gt;&gt;a       
+#notice it is row wise. It makes easier to visualize if you put all the element 
+#in 1D row array. Then take start row wise rearrangement  
+
+array([[0, 1],
+       [2, 3],
+       [4, 5]])
+
+&gt;&gt;&gt;np.reshape(a, (2, 3)) # C-like index ordering
+array([[0, 1, 2],
+       [3, 4, 5]])
+       
+#there can be one -1 index meaning its dimention are infered from number of elements and remaining specified shape
+&gt;&gt;&gt;np.reshape(a, (3,-1))       # the unspecified value is inferred to be 2
+array([[1, 2],
+       [3, 4],
+       [5, 6]])</code></pre>
+</section>
+<section id="np-array-slices" class="level2">
+<h2 class="anchored" data-anchor-id="np-array-slices">np array slices</h2>
+<p>The syntax of Python NumPy slicing is <code>[start : stop : step]</code></p>
+<ul>
+<li><p><code>Start</code> : This index by default considers as ‘0’</p></li>
+<li><p><code>stop</code> : This index considers as a length of the array.</p></li>
+<li><p><code>step</code> : By default it is considered as ‘1’.</p></li>
+</ul>
+<pre><code>#this is another way to create a numpy array
+&gt;&gt;&gt;arr = np.array([3, 5, 7, 9, 11, 15, 18, 22]) 
+&gt;&gt;&gt; arr2 = arr[:5]
+# [ 3  5  7  9 11]
+&gt;&gt;&gt;arr2 = arr[-4:-2]
+# [11 15]
+&gt;&gt;&gt;arr2 = arr[::3]
+#[ 3  9 18]
+
+
+arr = np.array([[3, 5, 7, 9, 11],
+               [2, 4, 6, 8, 10]])
+               
+
+# Use slicing a 2-D arrays
+arr2 = arr[1:,1:3]  #2D array remains 2D array
+[[4 6]]
+
+arr2 = arr[1,1:3] #2D array remains 1D array
+
+#now try solving this before looking at the solution
+arr = np.array([[[3, 5, 7, 9, 11],
+                 [2, 4, 6, 8, 10]],
+                [[5, 7, 8, 9, 2],
+                 [7, 2, 3, 6, 7]]])
+               
+arr2 = arr[0,1,0:2]</code></pre>
+<pre><code>[2 4]</code></pre>
+</section>
+<section id="numpy-axes" class="level2">
+<h2 class="anchored" data-anchor-id="numpy-axes">Numpy Axes</h2>
+<p>for a 2D array remember this figure</p>
+<p><img src="https://cdn-coiao.nitrocdn.com/CYHudqJZsSxQpAPzLkHFOkuzFKDpEHGF/assets/static/optimized/rev-85bf93c/wp-content/uploads/2018/12/numpy-arrays-have-axes_updated_v2-1024x525.png" class="img-fluid"></p>
+<pre><code>&gt;&gt;&gt; np_array_2d = np.arange(0, 6).reshape([2,3])
+[[0 1 2]
+ [3 4 5]]
+
+&gt;&gt;&gt;np.sum(np_array_2d, axis = 0) 
+array([3, 5, 7])
+
+&gt;&gt;&gt;np.sum(np_array_2d, axis = 1) #2d array become 1D in either case 
+
+array([3, 12])   # note its not array([[3],[12]])
+
+&gt;&gt;&gt; np_array_1s = np.array([[1,1,1],[1,1,1]])
+array([[1, 1, 1],
+       [1, 1, 1]])
+&gt;&gt;&gt; np_array_9s = np.array([[9,9,9],[9,9,9]])
+array([[9, 9, 9],
+       [9, 9, 9]])
+
+&gt;&gt;&gt; np.concatenate([np_array_1s, np_array_9s], axis = 0)
+array([[1, 1, 1],
+       [1, 1, 1],
+       [9, 9, 9],
+       [9, 9, 9]])
+
+&gt;&gt;&gt; np.concatenate([np_array_1s, np_array_9s], axis = 1)
+array([[1, 1, 1, 9, 9, 9],
+       [1, 1, 1, 9, 9, 9]])
+      
+# Be careful with 1D arrays are different. there is only 1 axis ie axis 0
+
+&gt;&gt;&gt; np_array_1s_1dim = np.array([1,1,1])
+&gt;&gt;&gt; np_array_9s_1dim = np.array([9,9,9])
+
+&gt;&gt;&gt; np.concatenate([np_array_1s_1dim, np_array_9s_1dim], axis = 0)
+
+array([1, 1, 1, 9, 9, 9])</code></pre>
 
 
 </section>

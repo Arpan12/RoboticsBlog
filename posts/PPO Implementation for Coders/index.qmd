@@ -16,11 +16,11 @@ After reading till the end of the blog, you should be able to implement PPO for 
 
 PPO is a policy gradient method
 
-$\pi(u|x)\to$our current policy. This in deep RL is usually approximate by a Neural Net called actor net
+$\pi(u|x)\to$our current policy. **This in deep RL is usually approximate by a Neural Net called actor net**
 
-$g(x_n,u_n)\to$ reward we get from the environment for taking action
+$g(x_n,u_n)\to$ cost incurred, we get from the environment for taking action
 
-$V_\pi(x) = g(x,\pi(x)) + \alpha*V_\pi(x+1)$ = value function for policy $\pi$ .
+$V_\pi(x) = g(x,\pi(x)) + \alpha*V_\pi(x+1)$ = value function for policy $\pi$ . **This in deep RL is usually approximate by a Neural Net called Critic net**
 
 if $J(\theta) = V_\pi(x_0)$ approximate value function for an episode starting at x0 following policy $\pi(\theta)$ ,We can decrease $J(\theta)$ by gradient descent $\theta_{new} = \theta - \gamma*\Delta J(\theta)$
 
@@ -36,7 +36,9 @@ which is similar to minimizing:
 
 $min_\theta E[\Psi_n*log\ \pi(u_n|x_n,|\theta)]$
 
-**This is what we would use for actor loss and minimize**
+**This is what we would use for actor loss and minimize. In Practice since we get rewards from the Env so we put a negative sign before** $\Psi_n$ **so that we maximize the reward gain**
+
+**For critic loss we take** $\Delta t_d^2$ where $t_d = g(x_n,u_n)+\gamma*V(x_{n+1)}-V(x_n)$
 
 for
 
@@ -46,16 +48,26 @@ for
 
 3.  Actor-Critic: $\Psi_n = g(x_n,u_n)+\alpha*V(x_{n+1})-V(x_n)$
 
-4.  PPO: $\Psi_n = A_n =  Q(x_n,u_n)-V(x_n)$
+4.  PPO: $\Psi_n = A_t = \sum_{t=k}^N \lambda *\mu*( Q(x_n,u_n)-V(x_n))$
 
-    but for PPO we approximate the log gradient even further by $min_\theta \sum[A_n\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old})}]$
+    where $Q(x_n,u_n) = g(x_n,u_n)+\gamma*V({x_{n+1}})$
+
+    but for PPO we approximate the log gradient even further by $min_\theta E[\sum_{n=0}^N A_n\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old})}]$
 
 For PPO we generally clip the gradient by limiting between 1-$\epsilon$ and 1+$\epsilon$
 
-$min_\theta E[min(A_n\ \frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},clip(\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},1-\epsilon,1+\epsilon)A_n]$
+$min_\theta E[\sum_{n=0}^N min(A_n\ \frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},clip(\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},1-\epsilon,1+\epsilon)A_n]$
 
 issue to address:
 
 ```{r}
 1 + 1
 ```
+
+### Implementation
+
+Batches and How to generate them
+
+compute the advantage
+
+loss function

@@ -6,8 +6,18 @@ categories: [RL, Code, Python]
 image: "image.jpg"
 ---
 
-This is a post with executable code.
+Create a pytorch Neural Network
 
 ```{r}
 1 + 1
 ```
+
+### Specify Optimizer in Pytorch
+
+### Theory behind assigning tensor to device
+
+### Save and Load Model checkpoint File
+
+**dist.sample**
+
+T.squeeze()

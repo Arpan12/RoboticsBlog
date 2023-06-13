@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/Python,Numpy cheat sheet for DL/index.html",
       "/posts/post-with-code/index.html",
       "/posts/PPO Implementation for Coders/index.html",
       "/posts/TensorFlow and Pytorch Cheetsheet for RL/index.html",
