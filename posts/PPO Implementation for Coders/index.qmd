@@ -6,7 +6,9 @@ categories: [RL, Code, Python]
 image: "image.jpg"
 ---
 
-PPO is state of the art algorithm for DeepRL. We wont go in depth into theory but focus on implementation.
+PPO is state of the art algorithm for DeepRL. We ll see how this can be implemented in code.
+
+We wont go in depth into theory but focus on implementation.
 
 ### Promise
 
@@ -48,7 +50,7 @@ for
 
 3.  Actor-Critic: $\Psi_n = g(x_n,u_n)+\alpha*V(x_{n+1})-V(x_n)$
 
-4.  PPO: $\Psi_n = A_t = \sum_{t=k}^N \lambda *\mu*( Q(x_n,u_n)-V(x_n))$
+4.  PPO: $\Psi_n = A_t = \sum_{t=k}^N (\lambda *\mu)^{t-k}*( Q(x_n,u_n)-V(x_n))$
 
     where $Q(x_n,u_n) = g(x_n,u_n)+\gamma*V({x_{n+1}})$
 
@@ -56,7 +58,7 @@ for
 
 For PPO we generally clip the gradient by limiting between 1-$\epsilon$ and 1+$\epsilon$
 
-$min_\theta E[\sum_{n=0}^N min(A_n\ \frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},clip(\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},1-\epsilon,1+\epsilon)A_n]$
+$min_\theta E[\sum_{n=0}^N min(A_n\ \frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},clip(\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},1-\epsilon,1+\epsilon)A_n)]$
 
 issue to address:
 

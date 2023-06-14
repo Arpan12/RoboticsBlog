@@ -21,3 +21,5 @@ Create a pytorch Neural Network
 **dist.sample**
 
 T.squeeze()
+
+## numpy to Tensor

@@ -184,7 +184,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>PPO is state of the art algorithm for DeepRL. We wont go in depth into theory but focus on implementation.</p>
+<p>PPO is state of the art algorithm for DeepRL. We ll see how this can be implemented in code.</p>
+<p>We wont go in depth into theory but focus on implementation.</p>
 <section id="promise" class="level3">
 <h3 class="anchored" data-anchor-id="promise">Promise</h3>
 <p>After reading till the end of the blog, you should be able to implement PPO for <strong>discrete action space</strong> based environments.</p>
@@ -209,12 +210,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>ReInforce: <span class="math inline">\(\Psi_n = G_n = \sum_{k=n}^N \alpha^k * g(x_k,u_k)\)</span></p></li>
 <li><p>ReInforce with baseLine: <span class="math inline">\(\Psi_n = G_n-V(x_n)\)</span></p></li>
 <li><p>Actor-Critic: <span class="math inline">\(\Psi_n = g(x_n,u_n)+\alpha*V(x_{n+1})-V(x_n)\)</span></p></li>
-<li><p>PPO: <span class="math inline">\(\Psi_n = A_t = \sum_{t=k}^N \lambda *\mu*( Q(x_n,u_n)-V(x_n))\)</span></p>
+<li><p>PPO: <span class="math inline">\(\Psi_n = A_t = \sum_{t=k}^N (\lambda *\mu)^{t-k}*( Q(x_n,u_n)-V(x_n))\)</span></p>
 <p>where <span class="math inline">\(Q(x_n,u_n) = g(x_n,u_n)+\gamma*V({x_{n+1}})\)</span></p>
 <p>but for PPO we approximate the log gradient even further by <span class="math inline">\(min_\theta E[\sum_{n=0}^N A_n\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old})}]\)</span></p></li>
 </ol>
 <p>For PPO we generally clip the gradient by limiting between 1-<span class="math inline">\(\epsilon\)</span> and 1+<span class="math inline">\(\epsilon\)</span></p>
-<p><span class="math inline">\(min_\theta E[\sum_{n=0}^N min(A_n\ \frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},clip(\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},1-\epsilon,1+\epsilon)A_n]\)</span></p>
+<p><span class="math inline">\(min_\theta E[\sum_{n=0}^N min(A_n\ \frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},clip(\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},1-\epsilon,1+\epsilon)A_n)]\)</span></p>
 <p>issue to address:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

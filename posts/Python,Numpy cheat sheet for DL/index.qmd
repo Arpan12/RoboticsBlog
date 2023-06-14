@@ -6,6 +6,8 @@ categories: [DL, Code, Python]
 image: "image.jpg"
 ---
 
+A cheat sheet for common numpy and Python APIs you would see and require for deep learning based programming for robotics
+
 ## np.zeros
 
 | **numpy.zeros(*shape*, *dtype=[float]{.underline}*, *order=['C']{.underline}*, *\**, *like=[None]{.underline}*)**
