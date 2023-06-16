@@ -22,40 +22,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -182,15 +148,89 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>This is a post with executable code.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
+<section id="create-a-pytorch-neural-network" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-pytorch-neural-network">Create a pytorch Neural Network</h2>
+</section>
+<section id="torch.tensor" class="level2">
+<h2 class="anchored" data-anchor-id="torch.tensor">Torch.Tensor</h2>
+<p>PyTorch provides <a href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor"><code>torch.Tensor</code></a> to represent a multi-dimensional array containing elements of a single data type</p>
+<p>It is basically the same as a numpy array: it does not know anything about deep learning or computational graphs or gradients, and is just a generic n-dimensional array to be used for arbitrary numeric computation. The biggest difference between a numpy array and a PyTorch Tensor is that a PyTorch Tensor can run on either CPU or GPU. To run operations on the GPU, just cast the Tensor to a cuda datatype.</p>
+<p>There are three attributes : <strong>torch.dtype, torch.device and torch.layout</strong></p>
+<pre><code>a = torch.rand(2,2, device='cpu')
+# transfer tensor created on cpu to gpu accessible memory.
+if torch.cuda.is_available():
+      device = torch.device('cuda') # create a device handle
+       a = a.to(device) # pass device handle created.</code></pre>
+</section>
+<section id="numpy-to-tensor" class="level2">
+<h2 class="anchored" data-anchor-id="numpy-to-tensor">numpy to Tensor</h2>
+<pre><code>&gt;&gt;&gt; print(f"observation= {observation}") 
+observation= [ 0.02916372 0.02608052 0.01869606 -0.00384168]
+&gt;&gt;&gt; state = T.tensor([observation],dtype=T.float).to(self.actor.device)
+&gt;&gt;&gt; print(f"state= {state}")
+state= tensor([[ 0.0292,  0.0261,  0.0187, -0.0038]], device='cuda:0')
 
 
+# Another way. convert from numpy to PyTorch
+np_array = np.ones((2,3))
+pytorch_tensor = torch.from_numpy(np_array)
+# convert from PyTorch to numpy
+pt_tensor = torch.rand(2,3)
+numpy_array = pt_tensor.numpy()
+# they share same underlying memory. So, changes to one shall be reflected on the other. 
+# for ex : pt_tensor update results in an update to numpy_array.</code></pre>
+</section>
+<section id="copying-tensor" class="level2">
+<h2 class="anchored" data-anchor-id="copying-tensor">Copying Tensor</h2>
+</section>
+<section id="save-and-load-model-checkpoint-file" class="level2">
+<h2 class="anchored" data-anchor-id="save-and-load-model-checkpoint-file">Save and Load Model checkpoint File</h2>
+<p>If the NN class inherits from torch.nn.Module,then you can get the parameters/weights directly from self.state_dict() and save using torch.save()</p>
+<pre><code>T.save(self.state_dict(),self.checkpoint_file)</code></pre>
+</section>
+<section id="pytorch-softmax-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="pytorch-softmax-distribution">PyTorch SoftMax / Distribution</h2>
+<p>we get a tensor with Probability dist from NN(last layer was softmax). We then get an action by sampling the dist object</p>
+<pre><code>&gt;&gt;&gt; dist = self.actor(state)
+&gt;&gt;&gt; print(f"dist {dist} {dist.probs}")
+dist Categorical(probs: torch.Size([1, 2])) tensor([[0.4913, 0.5087]], device='cuda:0', grad_fn=&lt;DivBackward0&gt;)
+
+&gt;&gt;&gt; action = dist.sample()
+&gt;&gt;&gt; print(f"action = {action}")
+action = tensor([1], device='cuda:0')</code></pre>
+</section>
+<section id="t.squeeze" class="level2">
+<h2 class="anchored" data-anchor-id="t.squeeze">T.squeeze()</h2>
+<p>torch.squeeze(input, dim=None) → Tensor Returns a tensor with all specified dimensions of input of size 1 removed.</p>
+<p>For example, if input is of shape: (A×1×B×C×1×D) then the input.squeeze() will be of shape: (A×B×C×D).</p>
+<p>When dim is given, a squeeze operation is done only in the given dimension(s). If input is of shape: (A×1×B), squeeze(input, 0) leaves the tensor unchanged, but squeeze(input, 1) will squeeze the tensor to the shape (A×B). Parameters: input (Tensor) – the input tensor.</p>
+<p>dim (int or tuple of ints, optional) –if given, the input will be squeezed only in the specified dimensions</p>
+<pre><code>&gt;&gt;&gt; x = torch.zeros(2, 1, 2, 1, 2) 
+&gt;&gt;&gt; x.size() 
+torch.Size([2, 1, 2, 1, 2]) 
+&gt;&gt;&gt; y = torch.squeeze(x) 
+&gt;&gt;&gt; y.size() 
+torch.Size([2, 2, 2]) 
+&gt;&gt;&gt; y = torch.squeeze(x, 0) 
+&gt;&gt;&gt; y.size() 
+torch.Size([2, 1, 2, 1, 2]) 
+&gt;&gt;&gt; y = torch.squeeze(x, 1) 
+&gt;&gt;&gt; y.size() 
+torch.Size([2, 2, 1, 2]) 
+&gt;&gt;&gt; y = torch.squeeze(x, (1, 2, 3)) 
+torch.Size([2, 2, 2])</code></pre>
+</section>
+<section id="optimizer.zero_grad" class="level2">
+<h2 class="anchored" data-anchor-id="optimizer.zero_grad">optimizer.zero_grad</h2>
+</section>
+<section id="total_loss.backward" class="level2">
+<h2 class="anchored" data-anchor-id="total_loss.backward">total_loss.backward</h2>
+</section>
+<section id="optimizer.step" class="level2">
+<h2 class="anchored" data-anchor-id="optimizer.step">optimizer.step</h2>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -6,20 +6,97 @@ categories: [RL, Code, Python]
 image: "image.jpg"
 ---
 
-Create a pytorch Neural Network
+## Create a pytorch Neural Network
 
-```{r}
-1 + 1
+## Torch.Tensor
+
+PyTorch provides [`torch.Tensor`](https://pytorch.org/docs/stable/tensors.html#torch.Tensor) to represent a multi-dimensional array containing elements of a single data type
+
+It is basically the same as a numpy array: it does not know anything about deep learning or computational graphs or gradients, and is just a generic n-dimensional array to be used for arbitrary numeric computation. The biggest difference between a numpy array and a PyTorch Tensor is that a PyTorch Tensor can run on either CPU or GPU. To run operations on the GPU, just cast the Tensor to a cuda datatype.
+
+There are three attributes : **torch.dtype, torch.device and torch.layout**
+
+```         
+a = torch.rand(2,2, device='cpu')
+# transfer tensor created on cpu to gpu accessible memory.
+if torch.cuda.is_available():
+      device = torch.device('cuda') # create a device handle
+       a = a.to(device) # pass device handle created.
 ```
 
-### Specify Optimizer in Pytorch
-
-### Theory behind assigning tensor to device
-
-### Save and Load Model checkpoint File
-
-**dist.sample**
-
-T.squeeze()
-
 ## numpy to Tensor
+
+```         
+>>> print(f"observation= {observation}") 
+observation= [ 0.02916372 0.02608052 0.01869606 -0.00384168]
+>>> state = T.tensor([observation],dtype=T.float).to(self.actor.device)
+>>> print(f"state= {state}")
+state= tensor([[ 0.0292,  0.0261,  0.0187, -0.0038]], device='cuda:0')
+
+
+# Another way. convert from numpy to PyTorch
+np_array = np.ones((2,3))
+pytorch_tensor = torch.from_numpy(np_array)
+# convert from PyTorch to numpy
+pt_tensor = torch.rand(2,3)
+numpy_array = pt_tensor.numpy()
+# they share same underlying memory. So, changes to one shall be reflected on the other. 
+# for ex : pt_tensor update results in an update to numpy_array.
+```
+
+## Copying Tensor
+
+## Save and Load Model checkpoint File
+
+If the NN class inherits from torch.nn.Module,then you can get the parameters/weights directly from self.state_dict() and save using torch.save()
+
+```         
+T.save(self.state_dict(),self.checkpoint_file)
+```
+
+## PyTorch SoftMax / Distribution
+
+we get a tensor with Probability dist from NN(last layer was softmax). We then get an action by sampling the dist object
+
+```         
+>>> dist = self.actor(state)
+>>> print(f"dist {dist} {dist.probs}")
+dist Categorical(probs: torch.Size([1, 2])) tensor([[0.4913, 0.5087]], device='cuda:0', grad_fn=<DivBackward0>)
+
+>>> action = dist.sample()
+>>> print(f"action = {action}")
+action = tensor([1], device='cuda:0')
+```
+
+## T.squeeze()
+
+torch.squeeze(input, dim=None) → Tensor Returns a tensor with all specified dimensions of input of size 1 removed.
+
+For example, if input is of shape: (A×1×B×C×1×D) then the input.squeeze() will be of shape: (A×B×C×D).
+
+When dim is given, a squeeze operation is done only in the given dimension(s). If input is of shape: (A×1×B), squeeze(input, 0) leaves the tensor unchanged, but squeeze(input, 1) will squeeze the tensor to the shape (A×B). Parameters: input (Tensor) -- the input tensor.
+
+dim (int or tuple of ints, optional) --if given, the input will be squeezed only in the specified dimensions
+
+```         
+>>> x = torch.zeros(2, 1, 2, 1, 2) 
+>>> x.size() 
+torch.Size([2, 1, 2, 1, 2]) 
+>>> y = torch.squeeze(x) 
+>>> y.size() 
+torch.Size([2, 2, 2]) 
+>>> y = torch.squeeze(x, 0) 
+>>> y.size() 
+torch.Size([2, 1, 2, 1, 2]) 
+>>> y = torch.squeeze(x, 1) 
+>>> y.size() 
+torch.Size([2, 2, 1, 2]) 
+>>> y = torch.squeeze(x, (1, 2, 3)) 
+torch.Size([2, 2, 2])
+```
+
+## optimizer.zero_grad
+
+## total_loss.backward
+
+## optimizer.step

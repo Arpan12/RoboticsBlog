@@ -186,12 +186,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>PPO is state of the art algorithm for DeepRL. We ll see how this can be implemented in code.</p>
 <p>We wont go in depth into theory but focus on implementation.</p>
-<section id="promise" class="level3">
-<h3 class="anchored" data-anchor-id="promise">Promise</h3>
+<section id="promise" class="level1">
+<h1>Promise</h1>
 <p>After reading till the end of the blog, you should be able to implement PPO for <strong>discrete action space</strong> based environments.</p>
 </section>
-<section id="theory" class="level3">
-<h3 class="anchored" data-anchor-id="theory">Theory</h3>
+<section id="theory" class="level1">
+<h1>Theory</h1>
 <p>PPO is a policy gradient method</p>
 <p><span class="math inline">\(\pi(u|x)\to\)</span>our current policy. <strong>This in deep RL is usually approximate by a Neural Net called actor net</strong></p>
 <p><span class="math inline">\(g(x_n,u_n)\to\)</span> cost incurred, we get from the environment for taking action</p>
@@ -224,13 +224,187 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="implementation" class="level3">
-<h3 class="anchored" data-anchor-id="implementation">Implementation</h3>
-<p>Batches and How to generate them</p>
-<p>compute the advantage</p>
-<p>loss function</p>
+<section id="implementation" class="level1">
+<h1>Implementation</h1>
+<section id="make-actor-and-critic-nn" class="level2">
+<h2 class="anchored" data-anchor-id="make-actor-and-critic-nn">Make Actor and Critic NN</h2>
+<p><strong>actor NN</strong>: takes in a state(you need to make a tensor out of your state.Cant pass a list or np array) and spits out a Categorical object containing probs(because the last layer was softmax on action_dim)</p>
+<p>for eg: in our case our observation is (4,) python list</p>
+<pre><code>&gt;&gt;&gt; print(f"observation= {observation}")
+observation= [ 0.02916372  0.02608052  0.01869606 -0.00384168]</code></pre>
+<p>we need to convert them to Tensor before passing them to NN</p>
+<pre><code>&gt;&gt;&gt; state = T.tensor([observation],dtype=T.float).to(self.actor.device)
+&gt;&gt;&gt; print(f"state= {state}")
+state= tensor([[ 0.0292,  0.0261,  0.0187, -0.0038]], device='cuda:0')</code></pre>
+<p>we get a tensor with Probability dist from NN(last layer was softmax). We then get an action by sampling the dist object</p>
+<pre><code>&gt;&gt;&gt; dist = self.actor(state)
+&gt;&gt;&gt; print(f"dist {dist} {dist.probs}")
+dist Categorical(probs: torch.Size([1, 2])) tensor([[0.4913, 0.5087]], device='cuda:0', grad_fn=&lt;DivBackward0&gt;)
+
+&gt;&gt;&gt; action = dist.sample()
+&gt;&gt;&gt; print(f"action = {action}")
+action = tensor([1], device='cuda:0')
+
+# Retrieve action from action tensor and log_probs
+# squeeze removes all axises having value 1. item() returns a standard python float
+&gt;&gt;&gt;  probs = T.squeeze(dist.log_prob(action)).item()
+&gt;&gt;&gt;  action = T.squeeze(action).item()
+&gt;&gt;&gt; print(f"log prob {dist.log_prob(action)} squeezed = {T.squeeze(dist.log_prob(action))} Probs = {probs}")
+log prob tensor([-0.7533], device='cuda:0', grad_fn=&lt;SqueezeBackward1&gt;) squeezed = -0.753328263759613 Probs = -0.753328263759613</code></pre>
+<p>The code For Actor class. It derives from Torch.nn.Module</p>
+<pre><code>class AgentNetwork(nn.Module):
+    def __init__(self,input_dims,action_dim,lr,layer1=256,layer2=256,weight_file='weightFiles/ppo_discrete'):
+        super(AgentNetwork,self).__init__()
+        self.checkpoint_file = os.path.join(weight_file,'ppo_actor_weight')
+        #TOCHECK: *input_dims vs input_dims
+        self.actor = nn.Sequential(
+                nn.Linear(*input_dims,layer1),
+                nn.ReLU(),
+                nn.Linear(layer1,layer2),
+                nn.ReLU(),
+                nn.Linear(layer2,action_dim),
+                nn.Softmax(dim=-1)               
+        )
+        
+        self.optimizer = optim.Adam(self.parameters(),lr=lr)
+        self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
+        self.to(self.device)
+    
+    def forward(self,state):
+        dist = self.actor(state)
+        #TOCHECK: what does categorical do
+        dist = Categorical(dist)
+        return dist
+    
+    def save_checkpoint(self):
+        T.save(self.state_dict(),self.checkpoint_file)
+    
+    def load_checkpoint(self):
+        self.load_state_dict(T.load(self.checkpoint_file))</code></pre>
+<p><strong>Critic NN</strong>: takes in a state(tensor) and returns a tensor containing a single float corresponding to Value of that state</p>
+<pre><code>&gt;&gt;&gt; state = T.tensor([observation],dtype=T.float).to(self.actor.device)
+&gt;&gt;&gt; value = self.critic(state)
+&gt;&gt;&gt; print(f"value {value}")
+value tensor([[-0.0977]], device='cuda:0', grad_fn=&lt;AddmmBackward0&gt;)</code></pre>
+<p>Code for Critic Class</p>
+<pre><code> class CriticNetwork(nn.Module):
+    def __init__(self,input_dims,lr,layer1=256,layer2=256,weight_file='weightFiles/ppo_discrete'):
+        super(CriticNetwork,self).__init__()
+        self.checkpoint_file = os.path.join(weight_file,'ppo_critic_weight')
+        self.critic = nn.Sequential(
+                nn.Linear(*input_dims,layer1),
+                nn.ReLU(),
+                nn.Linear(layer1,layer2),
+                nn.ReLU(),
+                nn.Linear(layer2,1)
+        )
+        self.optimizer = optim.Adam(self.parameters(),lr=lr)
+        self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
+        self.to(self.device)
+        
+    def forward(self,state):
+        value = self.critic(state)
+        return value
+    
+    def save_checkpoint(self):
+        T.save(self.state_dict(),self.checkpoint_file)
+    
+    def load_checkpoint(self):
+        self.load_state_dict(T.load(self.checkpoint_file))</code></pre>
+</section>
+<section id="batches-and-how-to-generate-them" class="level2">
+<h2 class="anchored" data-anchor-id="batches-and-how-to-generate-them">Batches and How to generate them</h2>
+<p>We need to take all the elements in the memory and create batches out of them.</p>
+<p><strong>GOAL</strong></p>
+<p>1.The elements should not repeat from one batch to another</p>
+<p>2.There should be any correlation between elements of same batch.</p>
+<p>Here is how we achieve that in code</p>
+<pre><code>  def generate_batches(self):
+        n_states = len(self.states)
+        batches=[]
+        i=0
+        indices = np.arange(n_states,dtype = np.int64)
+        np.random.shuffle(indices)
+        for i in range(n_states):
+            batches.append(indices[i:i+self.batch_size])
+            i+=self.batch_size
+        return np.array(self.states),\
+                np.array(self.actions),\
+                np.array(self.probs), \
+                np.array(self.vals),\
+                np.array(self.rewards), \
+                np.array(self.dones),\
+                batches
+#Note here only batch index get suffled. We need to have the actual order of states,actions,probs,vals,rewards and done so that we can calculate advatage of each state later</code></pre>
+</section>
+<section id="compute-the-advantage" class="level2">
+<h2 class="anchored" data-anchor-id="compute-the-advantage">compute the advantage</h2>
+<p>We know that advantage of a state is given by following equation</p>
+<p><span class="math inline">\(A_t = \sum_{t=k}^N (\lambda *\mu)^{t-k}*( Q(x_n,u_n)-V(x_n))\)</span></p>
+<p>Here is how we achieve that in code</p>
+<pre><code>state_arr,action_arr,probs_arr,vals_arr, \
+    rewards_arr,dones_arr,batches = self.memory.generate_batches()
+            
+advantages=np.zeros_like(rewards_arr)
+            
+for t in reversed(range(len(state_arr)-1)):
+    advantages[t] = rewards_arr[t]+self.gamma*vals_arr[t+1]*(1-int(dones_arr[t]))-vals_arr[t] + self.gamma*self.lambda_factor*advantages[t+1]
+                
+advantages = T.tensor(advantages).to(self.actor.device)</code></pre>
+</section>
+<section id="loss-function" class="level2">
+<h2 class="anchored" data-anchor-id="loss-function">loss function</h2>
+<p>for <strong>actor loss</strong>,we know that we need to minimize</p>
+<p><span class="math inline">\(min_\theta E[\sum_{n=0}^N min(A_n\ \frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},clip(\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},1-\epsilon,1+\epsilon)A_n)]\)</span></p>
+<p>so we can find gradient of this function with respect to our weights <span class="math inline">\(\Theta\)</span> and do a 1 step gradient descent</p>
+<p>This can be done in Code by</p>
+<pre><code> states = T.tensor(state_arr[batch],dtype = T.float).to(self.actor.device)
+actions = T.tensor(action_arr[batch],dtype = T.float).to(self.actor.device)
+old_probs = T.tensor(probs_arr[batch],dtype = T.float).to(self.actor.device)
+dist = self.actor(states)
+new_probs = dist.log_prob(actions)
+#TOCHECK: what do exp() do
+                
+prob_ratio = new_probs.exp()/old_probs.exp()
+                
+weighted_prob = advantages[batch]*(prob_ratio)
+                
+weighted_clipped_probs = T.clamp(prob_ratio,1-self.policy_clip,1+self.policy_clip)*advantages[batch]
+                
+actor_loss = - T.min(weighted_clipped_probs,weighted_prob).mean()</code></pre>
+<p>for <strong>Critic loss</strong>,we know that we need to minimize the error of values of our state <span class="math inline">\((V_{des} - V_{pred})^2\)</span></p>
+<p>where</p>
+<p><span class="math inline">\(V_{des} = a_t+value_{theta\_old}\)</span></p>
+<p><span class="math inline">\(V_{pred} = value \ from \ critic \ NN\)</span></p>
+<p>This is done in code as</p>
+<pre><code>critic_values = T.squeeze(critic_values)
+                
+desired_state_values = advantages[batch]+values[batch]
+critic_loss = (desired_state_values-critic_values)**2
+critic_loss = critic_loss.mean()</code></pre>
+<p>Then We calculate the total loss and do 1 step gradient descent as</p>
+<pre><code> total_loss = actor_loss+critic_loss*0.5
+                
+self.actor.optimizer.zero_grad()
+self.critic.optimizer.zero_grad()
+total_loss.backward()
+self.actor.optimizer.step()
+self.critic.optimizer.step()</code></pre>
+</section>
+<section id="learning-pseudo-code" class="level2">
+<h2 class="anchored" data-anchor-id="learning-pseudo-code">Learning Pseudo Code</h2>
+<pre><code>PPO_agent_learn:
+  for _ in num_of_epoch:
+    compute advantage of the states in memory
+    generate batchs
+    Iterate over batches:
+      calculate cummulative actor loss for the batch
+      calculate cummulative critic loss for the batch
+      do gradient update
+  clear Memory</code></pre>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
