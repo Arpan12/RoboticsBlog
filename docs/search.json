@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "RoboticsBlog",
     "section": "",
-    "text": "Python and Numpy cheat sheet for DL\n\n\n\n\n\n\n\nDL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nPPO Implementation for Coders\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nTensorFLow and Pytorch Cheat Sheet for RL\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nJun 7, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "Implementing SLAM in ROS\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nJun 18, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nPython and Numpy cheat sheet for DL\n\n\n\n\n\n\n\nDL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nWhat the F is Quaternions\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nDDPG Implementation for Coders\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nPPO Implementation for Coders\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nPytorch and TensorFlowCheat Sheet for RL\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -149,7 +149,7 @@
   {
     "objectID": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#save-and-load-model-checkpoint-file",
     "href": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#save-and-load-model-checkpoint-file",
-    "title": "TensorFLow and Pytorch Cheat Sheet for RL",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
     "section": "Save and Load Model checkpoint File",
     "text": "Save and Load Model checkpoint File\nIf the NN class inherits from torch.nn.Module,then you can get the parameters/weights directly from self.state_dict() and save using torch.save()\nT.save(self.state_dict(),self.checkpoint_file)"
   },
@@ -163,42 +163,42 @@
   {
     "objectID": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#t.squeeze",
     "href": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#t.squeeze",
-    "title": "TensorFLow and Pytorch Cheat Sheet for RL",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
     "section": "T.squeeze()",
     "text": "T.squeeze()\ntorch.squeeze(input, dim=None) → Tensor Returns a tensor with all specified dimensions of input of size 1 removed.\nFor example, if input is of shape: (A×1×B×C×1×D) then the input.squeeze() will be of shape: (A×B×C×D).\nWhen dim is given, a squeeze operation is done only in the given dimension(s). If input is of shape: (A×1×B), squeeze(input, 0) leaves the tensor unchanged, but squeeze(input, 1) will squeeze the tensor to the shape (A×B). Parameters: input (Tensor) – the input tensor.\ndim (int or tuple of ints, optional) –if given, the input will be squeezed only in the specified dimensions\n&gt;&gt;&gt; x = torch.zeros(2, 1, 2, 1, 2) \n&gt;&gt;&gt; x.size() \ntorch.Size([2, 1, 2, 1, 2]) \n&gt;&gt;&gt; y = torch.squeeze(x) \n&gt;&gt;&gt; y.size() \ntorch.Size([2, 2, 2]) \n&gt;&gt;&gt; y = torch.squeeze(x, 0) \n&gt;&gt;&gt; y.size() \ntorch.Size([2, 1, 2, 1, 2]) \n&gt;&gt;&gt; y = torch.squeeze(x, 1) \n&gt;&gt;&gt; y.size() \ntorch.Size([2, 2, 1, 2]) \n&gt;&gt;&gt; y = torch.squeeze(x, (1, 2, 3)) \ntorch.Size([2, 2, 2])"
   },
   {
     "objectID": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#numpy-to-tensor",
     "href": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#numpy-to-tensor",
-    "title": "TensorFLow and Pytorch Cheat Sheet for RL",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
     "section": "numpy to Tensor",
     "text": "numpy to Tensor\n&gt;&gt;&gt; print(f\"observation= {observation}\") \nobservation= [ 0.02916372 0.02608052 0.01869606 -0.00384168]\n&gt;&gt;&gt; state = T.tensor([observation],dtype=T.float).to(self.actor.device)\n&gt;&gt;&gt; print(f\"state= {state}\")\nstate= tensor([[ 0.0292,  0.0261,  0.0187, -0.0038]], device='cuda:0')\n\n\n# Another way. convert from numpy to PyTorch\nnp_array = np.ones((2,3))\npytorch_tensor = torch.from_numpy(np_array)\n# convert from PyTorch to numpy\npt_tensor = torch.rand(2,3)\nnumpy_array = pt_tensor.numpy()\n# they share same underlying memory. So, changes to one shall be reflected on the other. \n# for ex : pt_tensor update results in an update to numpy_array."
   },
   {
     "objectID": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#optimizer.zero_grad",
     "href": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#optimizer.zero_grad",
-    "title": "TensorFLow and Pytorch Cheat Sheet for RL",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
     "section": "optimizer.zero_grad",
     "text": "optimizer.zero_grad"
   },
   {
     "objectID": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#total_loss.backward",
     "href": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#total_loss.backward",
-    "title": "TensorFLow and Pytorch Cheat Sheet for RL",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
     "section": "total_loss.backward",
     "text": "total_loss.backward"
   },
   {
     "objectID": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#optimizer.step",
     "href": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#optimizer.step",
-    "title": "TensorFLow and Pytorch Cheat Sheet for RL",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
     "section": "optimizer.step",
     "text": "optimizer.step"
   },
   {
     "objectID": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#pytorch-softmax-distribution",
     "href": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#pytorch-softmax-distribution",
-    "title": "TensorFLow and Pytorch Cheat Sheet for RL",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
     "section": "PyTorch SoftMax / Distribution",
     "text": "PyTorch SoftMax / Distribution\nwe get a tensor with Probability dist from NN(last layer was softmax). We then get an action by sampling the dist object\n&gt;&gt;&gt; dist = self.actor(state)\n&gt;&gt;&gt; print(f\"dist {dist} {dist.probs}\")\ndist Categorical(probs: torch.Size([1, 2])) tensor([[0.4913, 0.5087]], device='cuda:0', grad_fn=&lt;DivBackward0&gt;)\n\n&gt;&gt;&gt; action = dist.sample()\n&gt;&gt;&gt; print(f\"action = {action}\")\naction = tensor([1], device='cuda:0')"
   },
@@ -212,14 +212,14 @@
   {
     "objectID": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#torch.tensor",
     "href": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#torch.tensor",
-    "title": "TensorFLow and Pytorch Cheat Sheet for RL",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
     "section": "Torch.Tensor",
     "text": "Torch.Tensor\nPyTorch provides torch.Tensor to represent a multi-dimensional array containing elements of a single data type\nIt is basically the same as a numpy array: it does not know anything about deep learning or computational graphs or gradients, and is just a generic n-dimensional array to be used for arbitrary numeric computation. The biggest difference between a numpy array and a PyTorch Tensor is that a PyTorch Tensor can run on either CPU or GPU. To run operations on the GPU, just cast the Tensor to a cuda datatype.\nThere are three attributes : torch.dtype, torch.device and torch.layout\na = torch.rand(2,2, device='cpu')\n# transfer tensor created on cpu to gpu accessible memory.\nif torch.cuda.is_available():\n      device = torch.device('cuda') # create a device handle\n       a = a.to(device) # pass device handle created."
   },
   {
     "objectID": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#copying-tensor",
     "href": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#copying-tensor",
-    "title": "TensorFLow and Pytorch Cheat Sheet for RL",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
     "section": "Copying Tensor",
     "text": "Copying Tensor"
   },
@@ -257,5 +257,201 @@
     "title": "PPO Implementation for Coders",
     "section": "Learning Pseudo Code",
     "text": "Learning Pseudo Code\nPPO_agent_learn:\n  for _ in num_of_epoch:\n    compute advantage of the states in memory\n    generate batchs\n    Iterate over batches:\n      calculate cummulative actor loss for the batch\n      calculate cummulative critic loss for the batch\n      do gradient update\n  clear Memory"
+  },
+  {
+    "objectID": "posts/DDPG Implementation for Coders/index.html",
+    "href": "posts/DDPG Implementation for Coders/index.html",
+    "title": "DDPG Implementation for Coders",
+    "section": "",
+    "text": "DDPG is a deepRL algorithm for agents with continuous actions space and Useful Particularly in the field of robotics where actuators and motors take continuous signal . We ll see how this can be implemented in code.\nWe wont go in depth into theory but focus on implementation."
+  },
+  {
+    "objectID": "posts/DDPG Implementation for Coders/index.html#make-actor-and-critic-nn",
+    "href": "posts/DDPG Implementation for Coders/index.html#make-actor-and-critic-nn",
+    "title": "DDPG Implementation for Coders",
+    "section": "Make Actor and Critic NN",
+    "text": "Make Actor and Critic NN\nWe need a critic NN that takes in state and action value and output a single float i.e. Q value of the state. Also, we need a Actor NN that takes in the state and tried to predict the action values. If a robot has 3 joints , the actor NN would output 3 values between 1 and -1\n#We use keras to form our model.\n#note critic returns just one value. Actor return N=action dim values between 1 to -1 \n#we do not need to specify the inout dimensions in the init. It picks that up from call function\n\nimport tensorflow.keras as keras\nfrom tensorflow.keras.layers import Dense\n\n\nclass CriticNetwork(keras.Model):\n  def __init__(self,layer1_dim=512,layer2_dim=512,chkpt_dir='weightFiles    /DDPG',name = \"Critic\"):\n        super(CriticNetwork,self).__init__()\n        self.layer1 = Dense(layer1_dim,activation = 'relu')\n        self.layer2 = Dense(layer2_dim,activation='relu')\n        self.v = Dense(1,activation=None)\n        self.checkpoint_file = os.path.join(chkpt_dir,name+\"_DDPG.h5\")\n        \n    def call(self,state,action):\n        x = self.layer1(tf.concat([state,action],axis=1))\n        x = self.layer2(x)\n        q = self.v(x)\n        return q\n    \n\nclass ActorNetwork(keras.Model):\n    def __init__(self,layer1_dim=512,layer2_dim=512,n_action_dim = 2,chkpt_dir=\"weightFiles/DDPG\",name = \"Actor\"):\n        super(ActorNetwork,self).__init__()\n        self.layer1 =  Dense(layer1_dim,activation='relu')\n        self.layer2 = Dense(layer2_dim,activation='relu')\n        self.actions = Dense(n_action_dim,activation='tanh')\n        self.checkpoint_file = os.path.join(chkpt_dir,name+\"_DDPG.h5\")\n    \n    def call(self,state):\n        x = self.layer1(state)\n        x = self.layer2(x)\n        actions = self.actions(x)\n        return actions"
+  },
+  {
+    "objectID": "posts/DDPG Implementation for Coders/index.html#batches-and-how-to-generate-them",
+    "href": "posts/DDPG Implementation for Coders/index.html#batches-and-how-to-generate-them",
+    "title": "DDPG Implementation for Coders",
+    "section": "Batches and How to generate them",
+    "text": "Batches and How to generate them\nWe create a replay memory where we store some large number of of (state,next_state,action_memory,reward_memory,done) transitions(in our case max is 1000000).\nclass ReplayBuffer:\n    def __init__(self,max_size,state_shape,action_shape):\n        self.mem_cnt=0\n        self.max_size = max_size\n        self.states = np.zeros((max_size,*state_shape))\n        self.next_states = np.zeros((max_size,*state_shape))\n        self.actions_memory = np.zeros((max_size,*action_shape))\n        self.rewards_memory = np.zeros((max_size,))\n        self.dones = np.zeros((max_size,))\n    \n    def store_transition(self,state,next_state,action,reward,done):\n        self.mem_cnt+=1\n        index = self.mem_cnt%self.max_size\n        self.states[index] = state\n        self.next_states[index] = next_state\n        self.actions_memory[index] = action\n        self.rewards_memory[index] = reward\n        self.dones[index] = done\nFor training we sample this memory for a batch of given size (in our case 64) and try to minimize our loss on that.\n    def sample_buffer(self,batch_size):\n        max_mem = min(self.mem_cnt,self.max_size)\n        batch = np.random.choice(max_mem,batch_size,replace = False)\n        \n        states = self.states[batch]\n        next_states = self.next_states[batch]\n        actions = self.actions_memory[batch]\n        rewards = self.rewards_memory[batch]\n        dones = self.dones[batch]\n        return states,next_states,actions,rewards,dones"
+  },
+  {
+    "objectID": "posts/DDPG Implementation for Coders/index.html#compute-the-advantage",
+    "href": "posts/DDPG Implementation for Coders/index.html#compute-the-advantage",
+    "title": "DDPG Implementation for Coders",
+    "section": "compute the advantage",
+    "text": "compute the advantage\nWe know that advantage of a state is given by following equation\n\\(A_t = \\sum_{t=k}^N (\\lambda *\\mu)^{t-k}*( Q(x_n,u_n)-V(x_n))\\)\nHere is how we achieve that in code\nstate_arr,action_arr,probs_arr,vals_arr, \\\n    rewards_arr,dones_arr,batches = self.memory.generate_batches()\n            \nadvantages=np.zeros_like(rewards_arr)\n            \nfor t in reversed(range(len(state_arr)-1)):\n    advantages[t] = rewards_arr[t]+self.gamma*vals_arr[t+1]*(1-int(dones_arr[t]))-vals_arr[t] + self.gamma*self.lambda_factor*advantages[t+1]\n                \nadvantages = T.tensor(advantages).to(self.actor.device)"
+  },
+  {
+    "objectID": "posts/DDPG Implementation for Coders/index.html#loss-function",
+    "href": "posts/DDPG Implementation for Coders/index.html#loss-function",
+    "title": "DDPG Implementation for Coders",
+    "section": "Loss function",
+    "text": "Loss function\nFor critic loss we take sum of \\(\\Delta t_d^2\\) where \\(t_d = g(x_n,u_n)+\\gamma*V(x_{n+1)}-V(x_n)\\) for the entire batch and try to minimize it.\nFirst you need to sample a batch and covert everything to tensor so that your NN can do the forward and back prop on it.\n        states,next_states,actions,rewards,dones = self.memory.sample_buffer(self.batch_size)\n        states = tf.convert_to_tensor(states,dtype=tf.float32)\n        next_states = tf.convert_to_tensor(next_states,dtype=tf.float32)\n        actions = tf.convert_to_tensor(actions,dtype=tf.float32)\n        rewards = tf.convert_to_tensor(rewards,dtype=tf.float32)\n        dones = tf.convert_to_tensor(dones,dtype=tf.float32)\n        \nAfter you have the batch then you can find the critic loss = sum of td error. But remember you need gradient of critic loss so put it inside GradientTape so Pytorch knows that it needs to form a computation graph.\n        with tf.GradientTape() as tape:\n            target_actions = self.target_actor(next_states)\n            \n            next_critic_val = tf.squeeze(self.target_critic(next_states,target_actions),1)\n            \n            critic_val = tf.squeeze(self.critic(states,actions),1)\n            target = rewards+self.gamma*next_critic_val*(1-done)\n            critic_loss = keras.losses.MSE(target,critic_val)\n\n#calculate the gradient and apply it\n        critic_network_gradient = tape.gradient(critic_loss,self.critic.trainable_variables) \n        self.critic.optimizer.apply_gradients(zip(critic_network_gradient,self.critic.trainable_variables))\nFor Actor loss,as explained earlier, we take loss function as L = -V(state) = - critic(state,actor(state))\n        with tf.GradientTape() as tape:\n            new_policy_actions = self.actor(states)\n            actor_loss = -self.critic(states,new_policy_actions)\n            actor_loss = tf.math.reduce_mean(actor_loss)\n        \n        actor_network_gradient = tape.gradient(actor_loss,self.actor.trainable_variables)\n        \n        self.actor.optimizer.apply_gradients(zip(actor_network_gradient,self.actor.trainable_variables))"
+  },
+  {
+    "objectID": "posts/DDPG Implementation for Coders/index.html#learning-pseudo-code",
+    "href": "posts/DDPG Implementation for Coders/index.html#learning-pseudo-code",
+    "title": "DDPG Implementation for Coders",
+    "section": "Learning Pseudo Code",
+    "text": "Learning Pseudo Code\nPPO_agent_learn:\n  for _ in num_of_epoch:\n    compute advantage of the states in memory\n    generate batchs\n    Iterate over batches:\n      calculate cummulative actor loss for the batch\n      calculate cummulative critic loss for the batch\n      do gradient update\n  clear Memory"
+  },
+  {
+    "objectID": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#create-a-tensorflow-neural-network",
+    "href": "posts/TensorFlow and Pytorch Cheetsheet for RL/index.html#create-a-tensorflow-neural-network",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
+    "section": "Create a TensorFlow Neural Network",
+    "text": "Create a TensorFlow Neural Network\nSet learning Rate\nIterate over weights\nsave and load weights\nnumpy to tensor\ntf.random.normal\ntf.clip by value\ntf.gradient_tape\ntape.gradient\napply_gradient\nkeras.losses.MSE"
+  },
+  {
+    "objectID": "posts/Python,Numpy cheat sheet for DL/index.html#np-random-choice",
+    "href": "posts/Python,Numpy cheat sheet for DL/index.html#np-random-choice",
+    "title": "Python and Numpy cheat sheet for DL",
+    "section": "Np random choice",
+    "text": "Np random choice"
+  },
+  {
+    "objectID": "posts/SLAM in ROS/index.html",
+    "href": "posts/SLAM in ROS/index.html",
+    "title": "Implementing SLAM in ROS",
+    "section": "",
+    "text": "Here is a project on How to implement slam in ROS. This project explains how to interface with various sensors and actuators as well as how to develop your project step by step in the simulator called Gazebo. We assume basic familiarity with ROS"
+  },
+  {
+    "objectID": "posts/SLAM in ROS/index.html#slam-in-ros",
+    "href": "posts/SLAM in ROS/index.html#slam-in-ros",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "Here is a project on How to implement slam in ROS. This project explains how to interface with various sensors and actuators as well as how to develop your project step by step in the simulator called Gazebo."
+  },
+  {
+    "objectID": "posts/SLAM in ROS/index.html#step-1",
+    "href": "posts/SLAM in ROS/index.html#step-1",
+    "title": "Implementing SLAM in ROS",
+    "section": "step 1:",
+    "text": "step 1:\ncreate a wander bot that scans any obstacles around it and avoids it\nstep 1.1: mkdir -p ~/wanderbot_ws/src\nstep 1.2: cd ~wanderbot_ws/src\nstep 1.3: catkin_init_workspace\nstep 1.4: cd ~/wanderbot_ws/src\nstep 1.5: catkin_create_pkg wanderbot rospy geometry_msgs sensor_msgs\nthis would create a package in your catkin_ws called wanderbot. Inside the package notice two files\n1.CMakeLists.txt : a starting point for the build script for this package\n2.package.xml: a machine-readable description of the package, including details such as its name, description, author, license, and which other packages it depends on to build and run\nNow inside the src of the package wanderbot write a python program that\n\nhas a publisher node to publish the cmd velocity to the wanderbot. The cmd velocity would be of type Twist\n from geometry_msgs.msg import Twist\n cmd_vel_pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)\nHere we publish to the topic cmd_vel messages of type Twist and queue size=1 tells rospy to buffer 1 outgoing msg. In case the node sending the messages is transmitting at a higher rate than the receiving node(s) can receive them, rospy will simply drop any messages beyond the queue_size\npublish message into this topic cmd_vel at 10 hz per second so as to not to send too many msgs\nrate = rospy.Rate(10)\nwhile not rospy.is_shutdown():\n  .....\n\n  rate.sleep()\nMessages of type Twist can be published that it then received by a subscriber node that run on the robot.\nmsg definition of Twist:\n# This expresses velocity in free space broken into its linear and angular parts.\nVector3 linear\nVector3 angular  \nso you can set a forward velocity of 0.5 as follows:\n\ngreen_light_twist = Twist()\ngreen_light_twist.linear.x = 0.5\n\nTo scan for any obstacles we use the laser can on boarded on the turtle-bot robot. It gives a linear vector of ranges from the robot to the nearest obstacles in various directions\n# Single scan from a planar laser range-finder\nHeader header            # timestamp in the header is the acquisition time of \n                         # the first ray in the scan.\n                         #\n                         # in frame frame_id, angles are measured around \n                         # the positive Z axis (counterclockwise, if Z is up)\n                         # with zero angle being forward along the x axis\n\nfloat32 angle_min        # start angle of the scan [rad]\nfloat32 angle_max        # end angle of the scan [rad]\nfloat32 angle_increment  # angular distance between measurements [rad]\n\nfloat32 time_increment   # time between measurements [seconds] - if your scanner\n                         # is moving, this will be used in interpolating position\n                         # of 3d points\nfloat32 scan_time        # time between scans [seconds]\n\nfloat32 range_min        # minimum range value [m]\nfloat32 range_max        # maximum range value [m]\n\nfloat32[] ranges         # range data [m] (Note: values &lt; range_min or &gt; range_max should be discarded)\nfloat32[] intensities    # intensity data [device-specific units].  If your\n                         # device does not provide intensities, please leave\n                         # the array empty.\n\nWe can calculate the bearing as:\nbearing = msg.angle_min + i * msg.angle_max / len(msg.ranges)\nWe can calculate the nearest obstacle directly in front of the robot by fetching the middle elements of the ranges\nrange_ahead = msg.ranges[len(msg.ranges)/2]\n\nWrite a subscriber to the Laser Scan data we receive from turtle bot\n\nfrom sensor_msgs.msg import LaserScan\ndef scan_callback(msg):\n  range_ahead = msg.ranges[len(msg.ranges)/2]\n  print \"range ahead: %0.1f\" % range_ahead\n\nscan_sub = rospy.Subscriber('scan', LaserScan, scan_callback)\n\nnext we can write a obstacle avoidance logic on basis of following psedo-code:\nif range_ahead &lt; 0.8:\n    publisher send a twist of velocity 0 and non-zero angular velocity \nelse:\n     publisher send a twist of velocity non zeros and zero angular velocity \nYou can run it like\nroslaunch turtlebot_gazebo turtlebot_world.launch\n\nchmod +x &lt;your pythonfile&gt;.py\n/&lt;your pythonfile&gt;.py cmd_vel:=cmd_vel_mux/input/teleop"
+  },
+  {
+    "objectID": "posts/SLAM in ROS/index.html#keyboard-to-move-your-robot",
+    "href": "posts/SLAM in ROS/index.html#keyboard-to-move-your-robot",
+    "title": "Implementing SLAM in ROS",
+    "section": "Keyboard to Move your Robot",
+    "text": "Keyboard to Move your Robot\n\nCreate a node that read the keyboard input.Make a publisher that forwards the read keyboard into a topic called keys.\nHow to do it in code\nimport sys,select,tty,termios\n\n#get current attribute/setting of terminal\nold_attr = termios.tcgetattr(sys.stdin)\n\n#set the setting so as to read every character and not wait till full line\ntty.setcbreak(sys.stdin.fileno())\n\nkey_pub = rospy.Publisher('keys',String,queue_size=1)\n\nif select.select([sys.stdin],[],[],0)[0]==[sys.stdin]:\n        key_pub.publish(sys.stdin.read(1))\n\n#reset back to the original setting\ntermios.tcsetattr(sys.stdin,termios.TCSADRAIN,old_attr)\nAnother node that subscribe to the keys and publishes a twist\n\nkey_mapping = {'w':[0,1],'x':[0,-1],\n               'a':[-1,0],'d':[1,0],\n               's':[0,0]}\n\ng_last_twist = None\ndef keys_cb(msg,twist_pub):\n    global g_last_twist\n    if len(msg.data) == 0 or not key_mapping.has_key(msg.data[0]):\n        return\n    \n    vels = key_mapping[msg.data[0]]\n    g_last_twist.angular.z = vels[0]\n    g_last_twist.linear.x = vels[1]\n    \nrospy.Subscriber('keys',String,keys_cb,twist_pub)\n\n# define publisher\ntwist_pub = rospy.Publisher('cmd_vel',Twist,queue_size=1)\ntwist_pub.publish(g_last_twist)\n\nDebug TIPS\n\nTo discover topic data : rostopic info cmd_vel\nThis will print information about the topic publishers and subscribers,as well as stating that the cmd_vel topic is of type geometry_msgs/Twist .\nrosmsg show geometry_msgs/Twist\n&gt;&gt;&gt; geometry_msgs/Vector3 linear\nfloat64 x\nfloat64 y\nfloat64 z\ngeometry_msgs/Vector3 angular\nfloat64 x\nfloat64 y\nfloat64 z\nTo plot in real time : rqt_plot cmd_vel/linear/x cmd_vel/angular/z"
+  },
+  {
+    "objectID": "posts/DDPG Implementation for Coders/index.html#target-and-non-target-nn.-when-is-each-used-in-training",
+    "href": "posts/DDPG Implementation for Coders/index.html#target-and-non-target-nn.-when-is-each-used-in-training",
+    "title": "DDPG Implementation for Coders",
+    "section": "Target and Non-Target NN. when is each used in training",
+    "text": "Target and Non-Target NN. when is each used in training\n\nTarget weight trails behind non target weight in update. The learning ie. Gradient descent is done on non target weight for a batch and then target is updated like target_weight = 0.995*target_weight+0.005*non_target weight\nBut when calculating critic and actor loss , while we want Q val of a state action pair, Target network is taken. The rational behind this is that target is slow moving hence more stable to current sampling that might move too randomly to converge"
+  },
+  {
+    "objectID": "posts/SLAM in ROS/index.html#parameter-server-in-ros",
+    "href": "posts/SLAM in ROS/index.html#parameter-server-in-ros",
+    "title": "Implementing SLAM in ROS",
+    "section": "Parameter Server in ROS",
+    "text": "Parameter Server in ROS\na parameter server is a generic key/value store. We can pass parameter from cmdline while starting the program\n./keys_to_twist_parameterized.py _linear_scale:=0.5 _angular_scale:=0.4\nand then you can use fetch the parameters from inside the program using\nif rospy.has_param('~linear_scale'):\n  g_vel_scales[1] = rospy.get_param('~linear_scale')\nIt is a good idea to ramp up the velocity instead of passing +- a target velocity which can be done like\ndef ramped_vel(v_prev, v_target, t_prev, t_now, ramp_rate):\n  step = ramp_rate * (t_now - t_prev).to_sec()\n  sign = 1.0 if (v_target &gt; v_prev) else -1.0\n  error = math.fabs(v_target - v_prev)\n  if error &lt; step: # we can get there within this timestep-we're done.\n  return v_target\n  else:\n  return v_prev + sign * step # take a step toward the target\n\n\ndef ramped_twist(prev, target, t_prev, t_now, ramps):\n  tw = Twist()\n  tw.angular.z = ramped_vel(prev.angular.z, target.angular.z, t_prev,\nt_now, ramps[0])\n  tw.linear.x = ramped_vel(prev.linear.x, target.linear.x, t_prev,\nt_now, ramps[1])\n  return tw\n  \ndef send_twist():\n  global g_last_twist_send_time, g_target_twist, g_last_twist,\\\ng_vel_scales, g_vel_ramps, g_twist_pub\n  t_now = rospy.Time.now()\n  g_last_twist = ramped_twist(g_last_twist,     g_target_twist,\n  g_last_twist_send_time, t_now, g_vel_ramps)\n  g_last_twist_send_time = t_now\n  g_twist_pub.publish(g_last_twist)"
+  },
+  {
+    "objectID": "posts/SLAM in ROS/index.html#to-drive-the-robot-using-keyboard",
+    "href": "posts/SLAM in ROS/index.html#to-drive-the-robot-using-keyboard",
+    "title": "Implementing SLAM in ROS",
+    "section": "To drive the Robot using keyboard",
+    "text": "To drive the Robot using keyboard\ncd catkin_ws\nsource devel/setup.bash\n\n#terminal 1\nroslaunch turtlebot3_gazebo turtlebot3_world.launch\n\n#terminal 2\npython key_publisher.py\n\n#terminal 3\npython keys_to_twist.py"
+  },
+  {
+    "objectID": "posts/SLAM in ROS/index.html#visualize-using-rviz",
+    "href": "posts/SLAM in ROS/index.html#visualize-using-rviz",
+    "title": "Implementing SLAM in ROS",
+    "section": "Visualize using RVIZ",
+    "text": "Visualize using RVIZ\nrviz stands for ROS visualization. It is a general purpose 3D visualization environment for robots,sensors and algorithm.\nFew fun facts about rviz\n\nrviz live in package also called rviz\nall forms of data are attached to a frame of reference. camera on turtlebot is attached to a reference frame defined relative to the center of the turtlebot’s mobile base. odom is taken where robot is powered on.\nSince all our data must be visualize wrt to a frame of reference.We must select this frame of reference in the global options/Fixed Frame\n\nTf topic primer\n\nWe must publish our frame of references relation over time on this topic.rviz also uses this topic to finds different frames. Why do we need this? because\nA robotic system typically has many 3D coordinate frames that change over time, such as a world frame, base frame, gripper frame, head frame, etc. tf keeps track of all these frames over time, and allows you to ask questions like:\n\nWhere was the head frame relative to the world frame, 5 seconds ago?\nWhat is the pose of the object in my gripper relative to my base?\nWhat is the current pose of the base frame in the map frame?\n\nAdd these line to your turtlebot 3 launch file to publish proper tf messages\n&lt;!-- Modified lines in the orgiginal package--&gt;\n\n&lt;node name=\"joint_state_publisher\" pkg=\"joint_state_publisher\" type=\"joint_state_publisher\"&gt; &lt;param name=\"use_gui\" value=\"TRUE\" /&gt; &lt;/node&gt;\n\n&lt;node name=\"robot_state_publisher\" pkg=\"robot_state_publisher\" type=\"robot_state_publisher\" /&gt;\n\n\nrviz has a no of panels and plugins that can be configured. after configuring,rviz can be saved , and loads automatically when you open it next time\nyou can add plugins like Image plugin to visualize what your camera see(you need to put the camera feed topic) or visualize"
+  },
+  {
+    "objectID": "posts/SLAM in ROS/index.html#building-maps-of-the-world",
+    "href": "posts/SLAM in ROS/index.html#building-maps-of-the-world",
+    "title": "Implementing SLAM in ROS",
+    "section": "Building Maps of the World",
+    "text": "Building Maps of the World\nbuilding a map would be simple: you could take the objects detected by the sensors, transform them into some global coordinate frame (using the robot’s position and some geome‐try), and then record them in a map (in this global coordinate frame).\nWRONG !!!\nBecause no sensor is perfect and robot does not know with full confidence how it is moving ( supposed the wheels slipped a little)\n\n\n\n\n\n\nROSBAG\nrosbag is a tool that lets us record messages and replay them later.\nwhy use them ?\n1. debugging new algorithms, since it lets you present the same data to the algo‐ rithm over and over, which will help you isolate and fix bugs.\n\nYou can record some sensor data from the robot with rosbag ,then use this recorded data to work on your code.\n\nTo record:\n&gt;&gt; rosbag record scan tf #saves in YYYY-MM-DD-HH-mm-ss.bag\n&gt;&gt;rosbag record -O foo.bag scan tf\n#saves in foo.bag\n&gt;&gt;rosbag record -o foo scan tf #saves in foo_2015-10-05-14-29-30.bag\n&gt;&gt; rosbag record -a\nto play the saved msgs\n&gt;&gt; rosbag play --clock foo.bag\n--clock flag causes rosbag to publish clock time which ll be important when we come to build our maps\n\n\n\nwe ll build maps with the slam_gmapping node from the gmapping package. The slam_gmapping node uses an implementation of the GMapping algorithm. GMapping uses a Rao-Blackwellized particle filter to keep track of the likely positions of the robot, based on its sensor data and the parts of the map that have already been built.\nWe’re going to drive the robot around and save the sensor data to a file using rosbag . We’re then going to replay this sensor data and use slam_gmapping to build a map for us.\nto create a map,run the following\n#terminal 1 # start the turtle bot in  the world\nroslaunch turtlebot3_gazebo turtlebot3_house.launch\n\n#terminal 2: start the gmapping node. Run this either directly or record the data first in a ros bag and then run it \nroslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping\n\n#terminal 3 : run rhe robot\nroslaunch turtlebot3_teleop turtlebot3_teleop_key.launch"
+  },
+  {
+    "objectID": "posts/What the F is Quaternions/index.html#torch.tensor",
+    "href": "posts/What the F is Quaternions/index.html#torch.tensor",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
+    "section": "Torch.Tensor",
+    "text": "Torch.Tensor\nPyTorch provides torch.Tensor to represent a multi-dimensional array containing elements of a single data type\nIt is basically the same as a numpy array: it does not know anything about deep learning or computational graphs or gradients, and is just a generic n-dimensional array to be used for arbitrary numeric computation. The biggest difference between a numpy array and a PyTorch Tensor is that a PyTorch Tensor can run on either CPU or GPU. To run operations on the GPU, just cast the Tensor to a cuda datatype.\nThere are three attributes : torch.dtype, torch.device and torch.layout\na = torch.rand(2,2, device='cpu')\n# transfer tensor created on cpu to gpu accessible memory.\nif torch.cuda.is_available():\n      device = torch.device('cuda') # create a device handle\n       a = a.to(device) # pass device handle created."
+  },
+  {
+    "objectID": "posts/What the F is Quaternions/index.html#numpy-to-tensor",
+    "href": "posts/What the F is Quaternions/index.html#numpy-to-tensor",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
+    "section": "numpy to Tensor",
+    "text": "numpy to Tensor\n&gt;&gt;&gt; print(f\"observation= {observation}\") \nobservation= [ 0.02916372 0.02608052 0.01869606 -0.00384168]\n&gt;&gt;&gt; state = T.tensor([observation],dtype=T.float).to(self.actor.device)\n&gt;&gt;&gt; print(f\"state= {state}\")\nstate= tensor([[ 0.0292,  0.0261,  0.0187, -0.0038]], device='cuda:0')\n\n\n# Another way. convert from numpy to PyTorch\nnp_array = np.ones((2,3))\npytorch_tensor = torch.from_numpy(np_array)\n# convert from PyTorch to numpy\npt_tensor = torch.rand(2,3)\nnumpy_array = pt_tensor.numpy()\n# they share same underlying memory. So, changes to one shall be reflected on the other. \n# for ex : pt_tensor update results in an update to numpy_array."
+  },
+  {
+    "objectID": "posts/What the F is Quaternions/index.html#copying-tensor",
+    "href": "posts/What the F is Quaternions/index.html#copying-tensor",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
+    "section": "Copying Tensor",
+    "text": "Copying Tensor"
+  },
+  {
+    "objectID": "posts/What the F is Quaternions/index.html#save-and-load-model-checkpoint-file",
+    "href": "posts/What the F is Quaternions/index.html#save-and-load-model-checkpoint-file",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
+    "section": "Save and Load Model checkpoint File",
+    "text": "Save and Load Model checkpoint File\nIf the NN class inherits from torch.nn.Module,then you can get the parameters/weights directly from self.state_dict() and save using torch.save()\nT.save(self.state_dict(),self.checkpoint_file)"
+  },
+  {
+    "objectID": "posts/What the F is Quaternions/index.html#pytorch-softmax-distribution",
+    "href": "posts/What the F is Quaternions/index.html#pytorch-softmax-distribution",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
+    "section": "PyTorch SoftMax / Distribution",
+    "text": "PyTorch SoftMax / Distribution\nwe get a tensor with Probability dist from NN(last layer was softmax). We then get an action by sampling the dist object\n&gt;&gt;&gt; dist = self.actor(state)\n&gt;&gt;&gt; print(f\"dist {dist} {dist.probs}\")\ndist Categorical(probs: torch.Size([1, 2])) tensor([[0.4913, 0.5087]], device='cuda:0', grad_fn=&lt;DivBackward0&gt;)\n\n&gt;&gt;&gt; action = dist.sample()\n&gt;&gt;&gt; print(f\"action = {action}\")\naction = tensor([1], device='cuda:0')"
+  },
+  {
+    "objectID": "posts/What the F is Quaternions/index.html#t.squeeze",
+    "href": "posts/What the F is Quaternions/index.html#t.squeeze",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
+    "section": "T.squeeze()",
+    "text": "T.squeeze()\ntorch.squeeze(input, dim=None) → Tensor Returns a tensor with all specified dimensions of input of size 1 removed.\nFor example, if input is of shape: (A×1×B×C×1×D) then the input.squeeze() will be of shape: (A×B×C×D).\nWhen dim is given, a squeeze operation is done only in the given dimension(s). If input is of shape: (A×1×B), squeeze(input, 0) leaves the tensor unchanged, but squeeze(input, 1) will squeeze the tensor to the shape (A×B). Parameters: input (Tensor) – the input tensor.\ndim (int or tuple of ints, optional) –if given, the input will be squeezed only in the specified dimensions\n&gt;&gt;&gt; x = torch.zeros(2, 1, 2, 1, 2) \n&gt;&gt;&gt; x.size() \ntorch.Size([2, 1, 2, 1, 2]) \n&gt;&gt;&gt; y = torch.squeeze(x) \n&gt;&gt;&gt; y.size() \ntorch.Size([2, 2, 2]) \n&gt;&gt;&gt; y = torch.squeeze(x, 0) \n&gt;&gt;&gt; y.size() \ntorch.Size([2, 1, 2, 1, 2]) \n&gt;&gt;&gt; y = torch.squeeze(x, 1) \n&gt;&gt;&gt; y.size() \ntorch.Size([2, 2, 1, 2]) \n&gt;&gt;&gt; y = torch.squeeze(x, (1, 2, 3)) \ntorch.Size([2, 2, 2])"
+  },
+  {
+    "objectID": "posts/What the F is Quaternions/index.html#optimizer.zero_grad",
+    "href": "posts/What the F is Quaternions/index.html#optimizer.zero_grad",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
+    "section": "optimizer.zero_grad",
+    "text": "optimizer.zero_grad"
+  },
+  {
+    "objectID": "posts/What the F is Quaternions/index.html#total_loss.backward",
+    "href": "posts/What the F is Quaternions/index.html#total_loss.backward",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
+    "section": "total_loss.backward",
+    "text": "total_loss.backward"
+  },
+  {
+    "objectID": "posts/What the F is Quaternions/index.html#optimizer.step",
+    "href": "posts/What the F is Quaternions/index.html#optimizer.step",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
+    "section": "optimizer.step",
+    "text": "optimizer.step"
+  },
+  {
+    "objectID": "posts/What the F is Quaternions/index.html#create-a-tensorflow-neural-network",
+    "href": "posts/What the F is Quaternions/index.html#create-a-tensorflow-neural-network",
+    "title": "Pytorch and TensorFlowCheat Sheet for RL",
+    "section": "Create a TensorFlow Neural Network",
+    "text": "Create a TensorFlow Neural Network\nSet learning Rate\nIterate over weights\nsave and load weights\nnumpy to tensor\ntf.random.normal\ntf.clip by value\ntf.gradient_tape\ntape.gradient\napply_gradient\nkeras.losses.MSE"
+  },
+  {
+    "objectID": "posts/What the F is Quaternions/index.html",
+    "href": "posts/What the F is Quaternions/index.html",
+    "title": "What the F is Quaternions",
+    "section": "",
+    "text": "If you are seeing Quaternions for the first time you probably are wondering why do we need 4 elements to represent a 3D world rotation. Wont three angles i.e. about x,y,z axis suffice. Yes and no? yes because that is what is called Euler angles and no because something called Gimbal Locks.\nExplain This\n** Why do we love quaternions in computer graphics? Because they have a number of appealing properties. First one can nicely interpolate them, which is important if one is animating rotating things, like the limbs around a joint. With a quaternion it is just scalar multiplication and normalization. Expressing this with a matrix requires evaluation of sin and cos, then building a rotation matrix. Then multiplying a vector with a quaternion is still cheaper as going through a full vector-matrix multiplication, it is also still cheaper if one adds a translation afterwards. If you consider a skeletal animation system for a human character, where one must evaluate a lot of translation/rotations for a large number of vertices, this has a huge impact. **"
   }
 ]

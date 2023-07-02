@@ -1,5 +1,5 @@
 ---
-title: "TensorFLow and Pytorch Cheat Sheet for RL"
+title: "Pytorch and TensorFlowCheat Sheet for RL"
 author: "Arpan Pallar"
 date: "2023-06-10"
 categories: [RL, Code, Python]
@@ -100,3 +100,25 @@ torch.Size([2, 2, 2])
 ## total_loss.backward
 
 ## optimizer.step
+
+## Create a TensorFlow Neural Network
+
+Set learning Rate
+
+Iterate over weights
+
+save and load weights
+
+numpy to tensor
+
+tf.random.normal
+
+tf.clip by value
+
+tf.gradient_tape
+
+tape.gradient
+
+apply_gradient
+
+keras.losses.MSE

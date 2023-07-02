@@ -60,12 +60,6 @@ For PPO we generally clip the gradient by limiting between 1-$\epsilon$ and 1+$\
 
 $min_\theta E[\sum_{n=0}^N min(A_n\ \frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},clip(\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},1-\epsilon,1+\epsilon)A_n)]$
 
-issue to address:
-
-```{r}
-1 + 1
-```
-
 # Implementation
 
 ## Make Actor and Critic NN

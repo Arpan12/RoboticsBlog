@@ -2,10 +2,12 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/SLAM in ROS/index.html",
       "/posts/Python,Numpy cheat sheet for DL/index.html",
+      "/posts/What the F is Quaternions/index.html",
+      "/posts/DDPG Implementation for Coders/index.html",
       "/posts/PPO Implementation for Coders/index.html",
-      "/posts/TensorFlow and Pytorch Cheetsheet for RL/index.html",
-      "/posts/welcome/index.html"
+      "/posts/TensorFlow and Pytorch Cheetsheet for RL/index.html"
     ]
   }
 ]
