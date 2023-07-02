@@ -2,7 +2,7 @@
 title: "Implementing SLAM in ROS"
 author: "Arpan Pallar"
 date: "2023-06-18"
-categories: [news]
+categories: [Robotics,Code,SLAM]
 ---
 
 Here is a project on How to implement slam in ROS. This project explains how to interface with various sensors and actuators as well as how to develop your project step by step in the simulator called Gazebo. We assume basic familiarity with ROS
