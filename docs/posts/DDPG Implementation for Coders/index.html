@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Arpan Pallar">
-<meta name="dcterms.date" content="2023-06-10">
+<meta name="dcterms.date" content="2023-06-16">
 
 <title>RoboticsBlog - DDPG Implementation for Coders</title>
 <style>
@@ -132,7 +132,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">June 10, 2023</p>
+        <p class="date">June 16, 2023</p>
       </div>
     </div>
     
@@ -306,6 +306,9 @@ class ActorNetwork(keras.Model):
 <li><p><strong>Target weight trails behind non target weight in update</strong>. The learning ie. Gradient descent is done on non target weight for a batch and then target is updated like target_weight = 0.995*target_weight+0.005*non_target weight</p></li>
 <li><p>But when calculating critic and actor loss , <strong>while we want Q val of a state action pair, Target network is taken</strong>. The rational behind this is that target is slow moving hence more stable to current sampling that might move too randomly to converge</p></li>
 </ol>
+</section>
+<section id="how-actions-are-scaled-from--1-to-1-to-actual-value" class="level2">
+<h2 class="anchored" data-anchor-id="how-actions-are-scaled-from--1-to-1-to-actual-value">How actions are scaled from -1 to 1 to actual value</h2>
 
 
 </section>

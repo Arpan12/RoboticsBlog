@@ -5,7 +5,7 @@ date: "2023-06-18"
 categories: [Robotics,Code,SLAM]
 ---
 
-Here is a project on How to implement slam in ROS. This project explains how to interface with various sensors and actuators as well as how to develop your project step by step in the simulator called Gazebo. We assume basic familiarity with ROS
+Here is a project on How to implement slam in ROS. This project explains how to interface with various sensors and actuators as well as how to develop your project step by step in the simulator called Gazebo. We assume basic familiarity with ROS.This blog is heavily influenced from Programming Robots with ROS book from Morgan Quigley which I highly recommend.
 
 ## step 1:
 

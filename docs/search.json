@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "RoboticsBlog",
     "section": "",
-    "text": "Implementing SLAM in ROS\n\n\n\n\n\n\n\nRobotics\n\n\nCode\n\n\nSLAM\n\n\n\n\n\n\n\n\n\n\n\nJun 18, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nPython and Numpy cheat sheet for DL\n\n\n\n\n\n\n\nDL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nWhat the F is Quaternions\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nDDPG Implementation for Coders\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nPPO Implementation for Coders\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nPytorch and TensorFlowCheat Sheet for RL\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\nNo matching items"
+    "text": "Controlling NASA’s R2 Robot\n\n\n\n\n\n\n\nRobotics\n\n\nCode\n\n\nManipulators\n\n\n\n\n\n\n\n\n\n\n\nJun 18, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nImplementing SLAM in ROS\n\n\n\n\n\n\n\nRobotics\n\n\nCode\n\n\nSLAM\n\n\n\n\n\n\n\n\n\n\n\nJun 18, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nDDPG Implementation for Coders\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nPPO Implementation for Coders\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 14, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nPython and Numpy cheat sheet for DL\n\n\n\n\n\n\n\nDL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\n  \n\n\n\n\nPytorch and TensorFlowCheat Sheet for RL\n\n\n\n\n\n\n\nRL\n\n\nCode\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nJun 10, 2023\n\n\nArpan Pallar\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -319,7 +319,7 @@
     "href": "posts/SLAM in ROS/index.html",
     "title": "Implementing SLAM in ROS",
     "section": "",
-    "text": "Here is a project on How to implement slam in ROS. This project explains how to interface with various sensors and actuators as well as how to develop your project step by step in the simulator called Gazebo. We assume basic familiarity with ROS"
+    "text": "Here is a project on How to implement slam in ROS. This project explains how to interface with various sensors and actuators as well as how to develop your project step by step in the simulator called Gazebo. We assume basic familiarity with ROS.This blog is heavily influenced from Programming Robots with ROS book from Morgan Quigley which I highly recommend."
   },
   {
     "objectID": "posts/SLAM in ROS/index.html#slam-in-ros",
@@ -453,5 +453,26 @@
     "title": "What the F is Quaternions",
     "section": "",
     "text": "If you are seeing Quaternions for the first time you probably are wondering why do we need 4 elements to represent a 3D world rotation. Wont three angles i.e. about x,y,z axis suffice. Yes and no? yes because that is what is called Euler angles and no because something called Gimbal Locks.\nExplain This\n** Why do we love quaternions in computer graphics? Because they have a number of appealing properties. First one can nicely interpolate them, which is important if one is animating rotating things, like the limbs around a joint. With a quaternion it is just scalar multiplication and normalization. Expressing this with a matrix requires evaluation of sin and cos, then building a rotation matrix. Then multiplying a vector with a quaternion is still cheaper as going through a full vector-matrix multiplication, it is also still cheaper if one adds a translation afterwards. If you consider a skeletal animation system for a human character, where one must evaluate a lot of translation/rotations for a large number of vertices, this has a huge impact. **"
+  },
+  {
+    "objectID": "posts/Controlling NASA's R2 robot/index.html",
+    "href": "posts/Controlling NASA's R2 robot/index.html",
+    "title": "Controlling NASA’s R2 Robot",
+    "section": "",
+    "text": "In this blog we ll generate write code to control NASA robot “Robonaut2” deployed in International space station. This blog is heavily influenced from Programming Robots with ROS book from Morgan Quigley which I highly recommend.\nYou should see a R2 robot in Gazebo"
+  },
+  {
+    "objectID": "posts/DDPG Implementation for Coders/index.html#how-actions-are-scaled-from--1-to-1-to-actual-value",
+    "href": "posts/DDPG Implementation for Coders/index.html#how-actions-are-scaled-from--1-to-1-to-actual-value",
+    "title": "DDPG Implementation for Coders",
+    "section": "How actions are scaled from -1 to 1 to actual value",
+    "text": "How actions are scaled from -1 to 1 to actual value"
+  },
+  {
+    "objectID": "posts/Controlling NASA's R2 robot/index.html#moving-with-moveit",
+    "href": "posts/Controlling NASA's R2 robot/index.html#moving-with-moveit",
+    "title": "Controlling NASA’s R2 Robot",
+    "section": "Moving with MoveIt",
+    "text": "Moving with MoveIt\nMoveIt is a comprehensive motion planning package that interacts nicely with ros. We can give moveit target position and it does the calculation and move the robotic arm.\nTo move the arm to a random position\nstep1 : Initialize moveit\nmoveit_commander.roscpp_initialize(sys.argv)\nstep2: assign joint groups to move.Here we want to move left arm and right arm of R2 robot\ngroup = [moveit_commander.MoveGroupCommander(\"left_arm\"),moveit_commander.MoveGroupCommander(\"right_arm\")]\nstep3: create random poses.\norient = [Quaternion(*tf.transformations.quaternion_from_euler(pi,-pi/2,-pi/2)),Quaternion(*tf.transformations.quaternion_from_euler(pi,-pi/2,-pi/2))]\npose = [Pose(Point(0.5,-0.5,1.3),orient[0]),Pose(Point(-0.5,-0.5,1.3),orient[1])]\nthen in each loop change pose randomly like\npose[0].position.x = 0.5 + random.uniform(-0.1,0.1)\npose[1].position.x = -0.5 + random.uniform(-0.1,0.1)\nfor side in [0,1]:       \n  pose[side].position.z = 1.5 + random.uniform(-0.1,0.1)\nstep4: move to the given pose\ngroup[side].set_pose_target(pose[side])\ngroup[side].go(True) \n\nPlaying Chess\nlets try to make the R2 robot play chess. To do that first we need to make a model of chessboard and chess pieces for gazebo. how do we make model? SDF (simulation description file). First lets model chess pieces. We ll model them as same box but we could have imported exact mesh just as easily.\nAny SDF model have these crucial elements\n\nModel Name : name of your model for eg. “piece”\n1.1. link name: name of our link.Each model can have many links for eg.link1\n1.1.1. Intertial: details like mass,moment of interia\n1.1.2. Collision: geometry of the link for collision(may or may not be the actual mesh),friction,contact\n1.1.3. Visual : actual rendered geometry of the box\n\nLook in the Model folder for the sdf files of ChessBoard and chess Pieces. Chessboard is made static so it does not required inertial values\nNext step is to use this SDF model to put model in gazebo. We can do it using a python script. We use two gazebo services called gazebo/delete_model for deleting an existing model. Mostly used for resetting existing model and gazebo/spawn_sdf_model to spawn a model from sdf file. Here is the code for how to use it.\n#first wait for these gazebo services to be available\n\n  rospy.wait_for_service(\"gazebo/delete_model\")\n  rospy.wait_for_service(\"gazebo/spawn_sdf_model\")\n  \n#get a object wrapper for this services\n    delete_model = rospy.ServiceProxy(\"gazebo/delete_model\",DeleteModel)\n    s = rospy.ServiceProxy(\"gazebo/spawn_sdf_model\",SpawnModel)\n    \n#to spawn a model: Read xml and create an object\n    with open(\"chessboard.sdf\",\"r\") as f:\n        board_xml = f.read()\n    with open(\"chess_piece.sdf\",\"r\") as f:\n        piece_xml = f.read()\n#get the pose of the board\n    orient = Quaternion(*tf.transformations.quaternion_from_euler(0,0,0))\n    board_pose = Pose(Point(0.25,1,39,0.90),orient)\n#spawn the board\n    s(\"chessboard\",board_xml,\"\",board_pose,\"world\")\n\n#get the pose of each indivisual pieces\n            pose = deepcopy(board_pose)\n            pose.position.x = board_pose.position.x-3.5*unit+col*unit\n            pose.position.y = board_pose.position.y-3.5*unit+row*unit\n            pose.position.z+=0.02\n\n#spwan the pieces\n    piece_name = \"piece%d_%d\"%(row,col)\n    s(piece_name,piece_xml,\"\",pose,\"world\")\n\n\n#you can delete the models like\n    delete_model(\"chessboard\")\n    delete_model(piece_name)"
   }
 ]

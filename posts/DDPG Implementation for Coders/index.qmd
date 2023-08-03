@@ -1,9 +1,9 @@
 ---
 title: "DDPG Implementation for Coders"
 author: "Arpan Pallar"
-date: "2023-06-10"
+date: "2023-06-16"
 categories: [RL, Code, Python]
-image: "image.jpg"
+image: "half_cheetah.gif"
 ---
 
 DDPG is a deepRL algorithm for agents with continuous actions space and Useful Particularly in the field of robotics where actuators and motors take continuous signal . We ll see how this can be implemented in code.
@@ -16,7 +16,9 @@ After reading till the end of the blog, you should be able to implement DDPG for
 
 Here is a half cheetah I trained using DDPG.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/f2IRG0rqKfA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/f2IRG0rqKfA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+
+</iframe>
 
 # Theory
 
@@ -212,3 +214,5 @@ For Actor loss,as explained earlier, we take loss function as L = -V(state) = - 
 1.  **Target weight trails behind non target weight in update**. The learning ie. Gradient descent is done on non target weight for a batch and then target is updated like target_weight = 0.995\*target_weight+0.005\*non_target weight
 
 2.  But when calculating critic and actor loss , **while we want Q val of a state action pair, Target network is taken**. The rational behind this is that target is slow moving hence more stable to current sampling that might move too randomly to converge
+
+## How actions are scaled from -1 to 1 to actual value

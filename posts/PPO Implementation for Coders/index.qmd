@@ -1,9 +1,9 @@
 ---
 title: "PPO Implementation for Coders"
 author: "Arpan Pallar"
-date: "2023-06-10"
+date: "2023-06-14"
 categories: [RL, Code, Python]
-image: "image.jpg"
+image: "Pendulum.gif"
 ---
 
 PPO is state of the art algorithm for DeepRL. We ll see how this can be implemented in code.
