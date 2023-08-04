@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Arpan Pallar">
-<meta name="dcterms.date" content="2023-06-14">
+<meta name="dcterms.date" content="2023-08-04">
 
-<title>RoboticsBlog - PPO Implementation for Coders</title>
+<title>RoboticsBlog - Non Linear Trajectory Optimization:Acrobat or Double Pendulum</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -110,9 +110,9 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">PPO Implementation for Coders</h1>
+      <h1 class="title">Non Linear Trajectory Optimization:Acrobat or Double Pendulum</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">RL</div>
+                <div class="quarto-category">casadi</div>
                 <div class="quarto-category">Code</div>
                 <div class="quarto-category">Python</div>
               </div>
@@ -132,7 +132,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">June 14, 2023</p>
+        <p class="date">August 4, 2023</p>
       </div>
     </div>
     
@@ -150,220 +150,206 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>PPO is state of the art algorithm for DeepRL. We ll see how this can be implemented in code(<a href="https://github.com/Arpan12/Reinforcement-Learning-Algos/blob/main/PPO_Discrete.ipynb" class="uri">https://github.com/Arpan12/Reinforcement-Learning-Algos/blob/main/PPO_Discrete.ipynb</a>)</p>
-<p>We wont go in depth into theory but focus on implementation.</p>
-<section id="promise" class="level1">
-<h1>Promise</h1>
-<p>After reading till the end of the blog, you should be able to implement PPO for <strong>discrete action space</strong> based environments.</p>
-</section>
-<section id="theory" class="level1">
-<h1>Theory</h1>
-<p>PPO is a policy gradient method</p>
-<p><span class="math inline">\(\pi(u|x)\to\)</span>our current policy. <strong>This in deep RL is usually approximate by a Neural Net called actor net</strong></p>
-<p><span class="math inline">\(g(x_n,u_n)\to\)</span> cost incurred, we get from the environment for taking action</p>
-<p><span class="math inline">\(V_\pi(x) = g(x,\pi(x)) + \alpha*V_\pi(x+1)\)</span> = value function for policy <span class="math inline">\(\pi\)</span> . <strong>This in deep RL is usually approximate by a Neural Net called Critic net</strong></p>
-<p>if <span class="math inline">\(J(\theta) = V_\pi(x_0)\)</span> approximate value function for an episode starting at x0 following policy <span class="math inline">\(\pi(\theta)\)</span> ,We can decrease <span class="math inline">\(J(\theta)\)</span> by gradient descent <span class="math inline">\(\theta_{new} = \theta - \gamma*\Delta J(\theta)\)</span></p>
-<p>so writing more mathematically</p>
-<p><span class="math inline">\(J(\theta) = E_{u_n}\sim \pi_{\theta}[\sum_{n=0}^N\alpha^n*g(x_n,u_n)]\)</span></p>
-<p>we are able to show(proof not important)</p>
-<p><span class="math inline">\(\Delta_\theta J(\theta) = E[\sum_{n=0}^N\Psi_n\Delta_nlog\ \pi(u_n|x_n,\theta)]\)</span></p>
-<p>which is similar to minimizing:</p>
-<p><span class="math inline">\(min_\theta E[\Psi_n*log\ \pi(u_n|x_n,|\theta)]\)</span></p>
-<p><strong>This is what we would use for actor loss and minimize. In Practice since we get rewards from the Env so we put a negative sign before</strong> <span class="math inline">\(\Psi_n\)</span> <strong>so that we maximize the reward gain</strong></p>
-<p><strong>For critic loss we take</strong> <span class="math inline">\(\Delta t_d^2\)</span> where <span class="math inline">\(t_d = g(x_n,u_n)+\gamma*V(x_{n+1)}-V(x_n)\)</span></p>
-<p>for</p>
-<ol type="1">
-<li><p>ReInforce: <span class="math inline">\(\Psi_n = G_n = \sum_{k=n}^N \alpha^k * g(x_k,u_k)\)</span></p></li>
-<li><p>ReInforce with baseLine: <span class="math inline">\(\Psi_n = G_n-V(x_n)\)</span></p></li>
-<li><p>Actor-Critic: <span class="math inline">\(\Psi_n = g(x_n,u_n)+\alpha*V(x_{n+1})-V(x_n)\)</span></p></li>
-<li><p>PPO: <span class="math inline">\(\Psi_n = A_t = \sum_{t=k}^N (\lambda *\mu)^{t-k}*( Q(x_n,u_n)-V(x_n))\)</span></p>
-<p>where <span class="math inline">\(Q(x_n,u_n) = g(x_n,u_n)+\gamma*V({x_{n+1}})\)</span></p>
-<p>but for PPO we approximate the log gradient even further by <span class="math inline">\(min_\theta E[\sum_{n=0}^N A_n\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old})}]\)</span></p></li>
-</ol>
-<p>For PPO we generally clip the gradient by limiting between 1-<span class="math inline">\(\epsilon\)</span> and 1+<span class="math inline">\(\epsilon\)</span></p>
-<p><span class="math inline">\(min_\theta E[\sum_{n=0}^N min(A_n\ \frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},clip(\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},1-\epsilon,1+\epsilon)A_n)]\)</span></p>
-</section>
-<section id="implementation" class="level1">
-<h1>Implementation</h1>
-<section id="make-actor-and-critic-nn" class="level2">
-<h2 class="anchored" data-anchor-id="make-actor-and-critic-nn">Make Actor and Critic NN</h2>
-<p><strong>actor NN</strong>: takes in a state(you need to make a tensor out of your state.Cant pass a list or np array) and spits out a Categorical object containing probs(because the last layer was softmax on action_dim)</p>
-<p>for eg: in our case our observation is (4,) python list</p>
-<pre><code>&gt;&gt;&gt; print(f"observation= {observation}")
-observation= [ 0.02916372  0.02608052  0.01869606 -0.00384168]</code></pre>
-<p>we need to convert them to Tensor before passing them to NN</p>
-<pre><code>&gt;&gt;&gt; state = T.tensor([observation],dtype=T.float).to(self.actor.device)
-&gt;&gt;&gt; print(f"state= {state}")
-state= tensor([[ 0.0292,  0.0261,  0.0187, -0.0038]], device='cuda:0')</code></pre>
-<p>we get a tensor with Probability dist from NN(last layer was softmax). We then get an action by sampling the dist object</p>
-<pre><code>&gt;&gt;&gt; dist = self.actor(state)
-&gt;&gt;&gt; print(f"dist {dist} {dist.probs}")
-dist Categorical(probs: torch.Size([1, 2])) tensor([[0.4913, 0.5087]], device='cuda:0', grad_fn=&lt;DivBackward0&gt;)
-
-&gt;&gt;&gt; action = dist.sample()
-&gt;&gt;&gt; print(f"action = {action}")
-action = tensor([1], device='cuda:0')
-
-# Retrieve action from action tensor and log_probs
-# squeeze removes all axises having value 1. item() returns a standard python float
-&gt;&gt;&gt;  probs = T.squeeze(dist.log_prob(action)).item()
-&gt;&gt;&gt;  action = T.squeeze(action).item()
-&gt;&gt;&gt; print(f"log prob {dist.log_prob(action)} squeezed = {T.squeeze(dist.log_prob(action))} Probs = {probs}")
-log prob tensor([-0.7533], device='cuda:0', grad_fn=&lt;SqueezeBackward1&gt;) squeezed = -0.753328263759613 Probs = -0.753328263759613</code></pre>
-<p>The code For Actor class. It derives from Torch.nn.Module</p>
-<pre><code>class AgentNetwork(nn.Module):
-    def __init__(self,input_dims,action_dim,lr,layer1=256,layer2=256,weight_file='weightFiles/ppo_discrete'):
-        super(AgentNetwork,self).__init__()
-        self.checkpoint_file = os.path.join(weight_file,'ppo_actor_weight')
-        #TOCHECK: *input_dims vs input_dims
-        self.actor = nn.Sequential(
-                nn.Linear(*input_dims,layer1),
-                nn.ReLU(),
-                nn.Linear(layer1,layer2),
-                nn.ReLU(),
-                nn.Linear(layer2,action_dim),
-                nn.Softmax(dim=-1)               
-        )
-        
-        self.optimizer = optim.Adam(self.parameters(),lr=lr)
-        self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
-        self.to(self.device)
-    
-    def forward(self,state):
-        dist = self.actor(state)
-        #TOCHECK: what does categorical do
-        dist = Categorical(dist)
-        return dist
-    
-    def save_checkpoint(self):
-        T.save(self.state_dict(),self.checkpoint_file)
-    
-    def load_checkpoint(self):
-        self.load_state_dict(T.load(self.checkpoint_file))</code></pre>
-<p><strong>Critic NN</strong>: takes in a state(tensor) and returns a tensor containing a single float corresponding to Value of that state</p>
-<pre><code>&gt;&gt;&gt; state = T.tensor([observation],dtype=T.float).to(self.actor.device)
-&gt;&gt;&gt; value = self.critic(state)
-&gt;&gt;&gt; print(f"value {value}")
-value tensor([[-0.0977]], device='cuda:0', grad_fn=&lt;AddmmBackward0&gt;)</code></pre>
-<p>Code for Critic Class</p>
-<pre><code> class CriticNetwork(nn.Module):
-    def __init__(self,input_dims,lr,layer1=256,layer2=256,weight_file='weightFiles/ppo_discrete'):
-        super(CriticNetwork,self).__init__()
-        self.checkpoint_file = os.path.join(weight_file,'ppo_critic_weight')
-        self.critic = nn.Sequential(
-                nn.Linear(*input_dims,layer1),
-                nn.ReLU(),
-                nn.Linear(layer1,layer2),
-                nn.ReLU(),
-                nn.Linear(layer2,1)
-        )
-        self.optimizer = optim.Adam(self.parameters(),lr=lr)
-        self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
-        self.to(self.device)
-        
-    def forward(self,state):
-        value = self.critic(state)
-        return value
-    
-    def save_checkpoint(self):
-        T.save(self.state_dict(),self.checkpoint_file)
-    
-    def load_checkpoint(self):
-        self.load_state_dict(T.load(self.checkpoint_file))</code></pre>
-</section>
-<section id="batches-and-how-to-generate-them" class="level2">
-<h2 class="anchored" data-anchor-id="batches-and-how-to-generate-them">Batches and How to generate them</h2>
-<p>We need to take all the elements in the memory and create batches out of them.</p>
-<p><strong>GOAL</strong></p>
-<p>1.The elements should not repeat from one batch to another</p>
-<p>2.There should be any correlation between elements of same batch.</p>
-<p>Here is how we achieve that in code</p>
-<pre><code>  def generate_batches(self):
-        n_states = len(self.states)
-        batches=[]
-        i=0
-        indices = np.arange(n_states,dtype = np.int64)
-        np.random.shuffle(indices)
-        for i in range(n_states):
-            batches.append(indices[i:i+self.batch_size])
-            i+=self.batch_size
-        return np.array(self.states),\
-                np.array(self.actions),\
-                np.array(self.probs), \
-                np.array(self.vals),\
-                np.array(self.rewards), \
-                np.array(self.dones),\
-                batches
-#Note here only batch index get suffled. We need to have the actual order of states,actions,probs,vals,rewards and done so that we can calculate advatage of each state later</code></pre>
-</section>
-<section id="compute-the-advantage" class="level2">
-<h2 class="anchored" data-anchor-id="compute-the-advantage">compute the advantage</h2>
-<p>We know that advantage of a state is given by following equation</p>
-<p><span class="math inline">\(A_t = \sum_{t=k}^N (\lambda *\mu)^{t-k}*( Q(x_n,u_n)-V(x_n))\)</span></p>
-<p>Here is how we achieve that in code</p>
-<pre><code>state_arr,action_arr,probs_arr,vals_arr, \
-    rewards_arr,dones_arr,batches = self.memory.generate_batches()
-            
-advantages=np.zeros_like(rewards_arr)
-            
-for t in reversed(range(len(state_arr)-1)):
-    advantages[t] = rewards_arr[t]+self.gamma*vals_arr[t+1]*(1-int(dones_arr[t]))-vals_arr[t] + self.gamma*self.lambda_factor*advantages[t+1]
-                
-advantages = T.tensor(advantages).to(self.actor.device)</code></pre>
-</section>
-<section id="loss-function" class="level2">
-<h2 class="anchored" data-anchor-id="loss-function">loss function</h2>
-<p>for <strong>actor loss</strong>,we know that we need to minimize</p>
-<p><span class="math inline">\(min_\theta E[\sum_{n=0}^N min(A_n\ \frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},clip(\frac{\pi(u_n|x_n,Theta)}{\pi(u_n| x_n,\theta_{old}},1-\epsilon,1+\epsilon)A_n)]\)</span></p>
-<p>so we can find gradient of this function with respect to our weights <span class="math inline">\(\Theta\)</span> and do a 1 step gradient descent</p>
-<p>This can be done in Code by</p>
-<pre><code> states = T.tensor(state_arr[batch],dtype = T.float).to(self.actor.device)
-actions = T.tensor(action_arr[batch],dtype = T.float).to(self.actor.device)
-old_probs = T.tensor(probs_arr[batch],dtype = T.float).to(self.actor.device)
-dist = self.actor(states)
-new_probs = dist.log_prob(actions)
-#TOCHECK: what do exp() do
-                
-prob_ratio = new_probs.exp()/old_probs.exp()
-                
-weighted_prob = advantages[batch]*(prob_ratio)
-                
-weighted_clipped_probs = T.clamp(prob_ratio,1-self.policy_clip,1+self.policy_clip)*advantages[batch]
-                
-actor_loss = - T.min(weighted_clipped_probs,weighted_prob).mean()</code></pre>
-<p>for <strong>Critic loss</strong>,we know that we need to minimize the error of values of our state <span class="math inline">\((V_{des} - V_{pred})^2\)</span></p>
+<p>Double pendulum have highly non linear dymanics. Thats why making controlling them and making them reach a desired state is an interesting control problem. In this blog we ll try to make a double pendulum stand straight by controlling a torque only at the mid joint using multiple shooting method. The result would look something like this.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JyNMFzWQudE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p>Why it is called the Acrobat? Because Acrobats does not have enough torque at their wrist. So they swing their body to reach vertical position above the pole</p>
+<section id="dynamics-equation" class="level3">
+<h3 class="anchored" data-anchor-id="dynamics-equation">Dynamics Equation</h3>
+<p>For a double pendulum with only torque <span class="math inline">\(u\)</span> at the middle joint the dynamics is given by</p>
+<p><span class="math inline">\(M(q)\ddot q + C(q,\dot q)\dot q= \tau_g(q)+Bu\)</span></p>
 <p>where</p>
-<p><span class="math inline">\(V_{des} = a_t+value_{theta\_old}\)</span></p>
-<p><span class="math inline">\(V_{pred} = value \ from \ critic \ NN\)</span></p>
-<p>This is done in code as</p>
-<pre><code>critic_values = T.squeeze(critic_values)
-                
-desired_state_values = advantages[batch]+values[batch]
-critic_loss = (desired_state_values-critic_values)**2
-critic_loss = critic_loss.mean()</code></pre>
-<p>Then We calculate the total loss and do 1 step gradient descent as</p>
-<pre><code> total_loss = actor_loss+critic_loss*0.5
-                
-self.actor.optimizer.zero_grad()
-self.critic.optimizer.zero_grad()
-total_loss.backward()
-self.actor.optimizer.step()
-self.critic.optimizer.step()</code></pre>
-</section>
-<section id="learning-pseudo-code" class="level2">
-<h2 class="anchored" data-anchor-id="learning-pseudo-code">Learning Pseudo Code</h2>
-<pre><code>PPO_agent_learn:
-  for _ in num_of_epoch:
-    compute advantage of the states in memory
-    generate batchs
-    Iterate over batches:
-      calculate cummulative actor loss for the batch
-      calculate cummulative critic loss for the batch
-      do gradient update
-  clear Memory</code></pre>
+<p>$ M(q) =</p>
+<span class="math display">\[\begin{matrix}I_1+I_2+m_2l_1^2+2m_2l_1l_2c_2 &amp; I_2+m_2l_1l_2c_2\\I_2+m_2l_1l_2c_2 &amp; 1_2 \end{matrix}\]</span>
+<p>$</p>
+<p><span class="math inline">\(C(q,\dot q) = \begin{matrix} -2m_2l_1l_2s_2\dot q_2 &amp; -m_2l_1l_2s_2\dot q_2 \\ m_2l_1l_2s_2\dot q_1 &amp; 0\end{matrix}\)</span></p>
+<p><span class="math inline">\(\tau_g(q) = \begin{matrix} -m_1gl_1s_1-m_2g(l_1s_1+l_2s_{1+2}) \\ -m_2gl_2s_{1+2} \end{matrix}\)</span></p>
+<p><span class="math inline">\(B = \begin{matrix} 0 \\ 1\end{matrix}\)</span></p>
+<p>where</p>
+<p><span class="math inline">\(q = [\theta_1,\theta_2]\)</span></p>
+<p><span class="math inline">\(s1 = sin(\theta_1) ,\ s_{1+2} = sin(\theta_1+\theta_2)\)</span></p>
+<p>we can code this in python like</p>
+<pre><code>def deriv2(y,u):
+    theta1 = y[0]
+    theta2 = y[1]
+    y1_dot = y[2]
+    y2_dot = y[3]
+    g = 9.81
+    s1 = np.sin(theta1)
 
 
+    M = np.array([[I1+I2+m2*l1**2+2*m2*l1*l2*np.cos(theta2),I2+m2*l1*l2*np.cos(theta2)],
+         [I2+m2*l1*l2*np.cos(theta2),I2]])
+    print(M.shape)
+    C = np.array([[-2*m2*l1*l2*np.sin(theta2)*y2_dot, -m2*l1*l2*np.sin(theta2)*y2_dot],
+         [m2*l1*l2*np.sin(theta2)*y1_dot,0]])
+    print(C.shape)
+    T = np.array([[-m1*g*l1*s1-m2*g*(l1*s1+l2*np.sin(theta1+theta2))],[-m2*g*l2*np.sin(theta1+theta2)]])
+    print(T.shape)
+    B = np.array([[0],[1]])
+    print(B.shape)
+    d2y = np.matmul(np.linalg.inv(M),T+np.matmul(B,u)-np.matmul(C,[[y1_dot],[y2_dot]]))
+    return np.array([y1_dot,y2_dot,d2y[0][0],d2y[1][0]])</code></pre>
 </section>
+<section id="optimal-equation-formulation" class="level3">
+<h3 class="anchored" data-anchor-id="optimal-equation-formulation">Optimal Equation Formulation</h3>
+<p>we use multiple shooting method that means we put state and the control input u as decision variable and use the dynamics equation as constraints</p>
+<p>we want to minimize the cost function</p>
+<pre><code> L =  0.5*(u)**2 + 100*(MX.cos(theta1)+1)**2+100*(MX.cos(theta2)+1)**2+10*dtheta1**2+10*dtheta2**2</code></pre>
+<p>subject to</p>
+<p><span class="math inline">\(\dot x-f(x,u)=0\)</span></p>
+<p>or if we discretize using RK4 at <span class="math inline">\(t_n\)</span> we get</p>
+<p><span class="math inline">\(X_{n+1} -g(X_{n},u)=0\)</span></p>
+</section>
+<section id="code" class="level3">
+<h3 class="anchored" data-anchor-id="code">Code</h3>
+<p>we use CASADI as the program to solve this NLP. I recommend watching this tutorial video from the creater of Casadi,Joris Gillis to know how to use it <a href="https://www.youtube.com/watch?v=ANicKS8gKdM" class="uri">https://www.youtube.com/watch?v=ANicKS8gKdM</a></p>
+<p>first create the dynamics in casadi matrix form</p>
+<pre><code>def deriv(y,t,u,l):
+    theta1 = y[0]
+    theta2 = y[1]
+    y1_dot = y[2]
+    y2_dot = y[3]
+    g = 9.81
+    s1 = MX.sin(theta1)
+
+    M = MX(2,2)
+    M[0,0] = I1+I2+m2*l1**2+2*m2*l1*l2*MX.cos(theta2)
+    M[0,1] = I2+m2*l1*l2*MX.cos(theta2)
+    M[1,0] = I2+m2*l1*l2*MX.cos(theta2)
+    M[1,1] = I2
+    
+    C = MX(2,2)
+    C[0,0] = -2*m2*l1*l2*MX.sin(theta2)*y2_dot
+    C[0,1] = -m2*l1*l2*MX.sin(theta2)*y2_dot
+    C[1,0] = m2*l1*l2*MX.sin(theta2)*y1_dot
+    C[1,1] = 0
+
+    T = MX(2,1)
+    T[0,0] = -m1*g*l1*s1-m2*g*(l1*s1+l2*MX.sin(theta1+theta2))
+    T[1,0] = -m2*g*l2*MX.sin(theta1+theta2)
+   
+    B = MX(2,1)
+    B[0,0] = 0
+    B[1,0] = 1
+    
+    y_dot = MX(2,1)
+    y_dot[0,0]=y1_dot 
+    y_dot[1,0] = y2_dot
+
+    d2y = solve(M,T+mtimes(B,u)-mtimes(C,y_dot))
+    return y1_dot,y2_dot,d2y[0][0],d2y[1][0]</code></pre>
+<p>Then define and set the optimal control problem</p>
+<p>x_k = state at Kth time step; 4x1 matrix</p>
+<p>u_k = torque at Kth time step; 1x1 matrix</p>
+<p>lbw = lower limit on decision variable</p>
+<p>ubw = upper limit on decision variable</p>
+<p>w0 = initial guess on the state</p>
+<p>lbg = constraints lower limit</p>
+<p>ubg = constraints upper limit</p>
+<pre><code>w=[]
+w0 = []
+lbw = []
+ubw = []
+J = 0
+g=[]
+lbg = []
+ubg = []
+
+# "Lift" initial conditions
+Xk = MX.sym('X0', 4)
+w += [Xk]
+lbw += [0.1, 0.0,0,0]
+ubw += [0.1, 0.0,0,0]
+w0 += [0.1, 0.0,0,0]
+
+# Formulate the NLP
+for k in range(N):
+    # New NLP variable for the control
+    Uk = MX.sym('U_' + str(k))
+    w   += [Uk]
+    lbw += [-inf]
+    ubw += [inf]
+    w0  += [0]
+
+    # Integrate till the end of the interval
+    Fk = F(x0=Xk, u=Uk)
+    Xk_end = Fk['xf']
+    J=J+Fk['qf']
+
+    # New NLP variable for state at end of interval
+    Xk = MX.sym('X_' + str(k+1), 4)
+    w   += [Xk]
+    lbw += [-inf, -inf,-inf,-inf]
+    ubw += [ inf,inf,inf,inf]
+    w0  += [0,0,0,0]
+
+    # Add equality constraint
+    g   += [Xk_end-Xk]
+    lbg += [0, 0,0,0]
+    ubg += [0, 0,0,0]
+
+# Create an NLP solver
+prob = {'f': J, 'x': vertcat(*w), 'g': vertcat(*g)}
+solver = nlpsol('solver', 'ipopt', prob)
+
+
+sol = solver(x0=w0, lbx=lbw, ubx=ubw, lbg=lbg, ubg=ubg)
+w_opt = sol['x'].full().flatten()
+
+# Plot the solution
+x1_opt = w_opt[0::5]
+x2_opt = w_opt[1::5]
+x3_opt = w_opt[2::5]
+x4_opt = w_opt[3::5]
+u_opt = w_opt[4::5]</code></pre>
+</section>
+<section id="animate-optimal-states" class="level3">
+<h3 class="anchored" data-anchor-id="animate-optimal-states">Animate optimal states</h3>
+<pre><code>fig = plt.figure(figsize=(8.33,6.25),dpi=72)
+ax = fig.add_subplot(111)
+y = [math.pi/3,math.pi/2,0,0]
+x1 = math.sin(y[0])
+y1 = - math.cos(y[0])
+x2 = x1+math.sin(y[1])
+y2 = y1-math.cos(y[1])
+line, = ax.plot([0,x1,x2],[0,y1,y2],lw=2,c='k')
+r=0.05
+c1 = Circle((x1,y1),r,fc='b',ec='b',zorder=10)
+c2 = Circle((x2,y2),r,fc='b',ec='b',zorder=10)
+circle1 = ax.add_patch(c1)
+circle2  = ax.add_patch(c2)
+ns=20
+ax.set_xlim(-5, 5)
+ax.set_ylim(-5, 5)
+
+
+
+def animate(i):
+    x1 = math.sin(y_track[i,0])
+    y1 = - math.cos(y_track[i,0])
+    x2 = x1+math.sin(y_track[i,1])
+    y2 = y1-math.cos(y_track[i,1])
+    line.set_data([0,x1,x2],[0,y1,y2])
+    circle1.set_center((x1,y1))
+    circle2.set_center((x2,y2))
+    
+y_init = [0.1,0,0,0]
+X = y_init
+t = [0,0.1]
+
+y_track=np.array([y_init for i in range(100)])
+print(y_track.shape)
+for i in range(0,99):
+    y_track[i,:] = [x1_opt[i],x2_opt[i],x3_opt[i],x4_opt[i]]
+    
+
+ani = animation.FuncAnimation(fig, animate,frames=99,interval=100)
+#plt.show()
+FFwriter = animation.FFMpegWriter(fps=10)
+ani.save('animation.mp4', writer = FFwriter)</code></pre>
+
+
 </section>
 
 </main> <!-- /main -->

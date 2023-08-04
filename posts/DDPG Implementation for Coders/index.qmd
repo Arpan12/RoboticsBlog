@@ -6,7 +6,7 @@ categories: [RL, Code, Python]
 image: "half_cheetah.gif"
 ---
 
-DDPG is a deepRL algorithm for agents with continuous actions space and Useful Particularly in the field of robotics where actuators and motors take continuous signal . We ll see how this can be implemented in code.
+DDPG is a deepRL algorithm for agents with continuous actions space and Useful Particularly in the field of robotics where actuators and motors take continuous signal . We ll see how this can be implemented in code ([https://github.com/Arpan12/Reinforcement-Learning-Algos/blob/main/DDPG.ipyn](https://github.com/Arpan12/Reinforcement-Learning-Algos/blob/main/DDPG.ipynb))
 
 We wont go in depth into theory but focus on implementation.
 

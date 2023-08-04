@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/NLPTrajOPt/index.html",
       "/posts/Controlling NASA's R2 robot/index.html",
       "/posts/SLAM in ROS/index.html",
       "/posts/DDPG Implementation for Coders/index.html",

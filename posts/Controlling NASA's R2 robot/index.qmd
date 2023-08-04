@@ -7,6 +7,12 @@ categories: [Robotics,Code,Manipulators]
 
 In this blog we ll generate write code to control NASA robot "Robonaut2" deployed in International space station. This blog is heavily influenced from Programming Robots with ROS book from Morgan Quigley which I highly recommend.
 
+Result would look like this
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4Qw3BKPo444" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+
+</iframe>
+
 ```         
 > sudo apt-get install ros-melodic-ros-control ros-melodic-gazebo-ros-control ros-melodic-joint-state-controller ros-melodic-effort-controllers ros-melodic-joint-trajectory-controller ros-melodic-moveit* ros-melodic-octomap* ros-melodic-object-recognition-*
 

@@ -1,0 +1,251 @@
+---
+title: "Non Linear Trajectory Optimization:Acrobat or Double Pendulum"
+author: "Arpan Pallar"
+date: "2023-08-04"
+categories: [casadi, Code, Python]
+image: "acrobat.png"
+---
+
+Double pendulum have highly non linear dymanics. Thats why making controlling them and making them reach a desired state is an interesting control problem. In this blog we ll try to make a double pendulum stand straight by controlling a torque only at the mid joint using multiple shooting method. The result would look something like this.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JyNMFzWQudE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+
+</iframe>
+
+Why it is called the Acrobat? Because Acrobats does not have enough torque at their wrist. So they swing their body to reach vertical position above the pole
+
+### Dynamics Equation
+
+For a double pendulum with only torque $u$ at the middle joint the dynamics is given by
+
+$M(q)\ddot q + C(q,\dot q)\dot q= \tau_g(q)+Bu$
+
+where
+
+\$ M(q) =
+
+```{=tex}
+\begin{matrix}I_1+I_2+m_2l_1^2+2m_2l_1l_2c_2 & I_2+m_2l_1l_2c_2\\I_2+m_2l_1l_2c_2 & 1_2 \end{matrix}
+```
+\$
+
+$C(q,\dot q) = \begin{matrix} -2m_2l_1l_2s_2\dot q_2 & -m_2l_1l_2s_2\dot q_2 \\ m_2l_1l_2s_2\dot q_1 & 0\end{matrix}$
+
+$\tau_g(q) = \begin{matrix} -m_1gl_1s_1-m_2g(l_1s_1+l_2s_{1+2}) \\ -m_2gl_2s_{1+2} \end{matrix}$
+
+$B = \begin{matrix} 0 \\ 1\end{matrix}$
+
+where
+
+$q = [\theta_1,\theta_2]$
+
+$s1 = sin(\theta_1) ,\ s_{1+2} = sin(\theta_1+\theta_2)$
+
+we can code this in python like
+
+```         
+def deriv2(y,u):
+    theta1 = y[0]
+    theta2 = y[1]
+    y1_dot = y[2]
+    y2_dot = y[3]
+    g = 9.81
+    s1 = np.sin(theta1)
+
+
+    M = np.array([[I1+I2+m2*l1**2+2*m2*l1*l2*np.cos(theta2),I2+m2*l1*l2*np.cos(theta2)],
+         [I2+m2*l1*l2*np.cos(theta2),I2]])
+    print(M.shape)
+    C = np.array([[-2*m2*l1*l2*np.sin(theta2)*y2_dot, -m2*l1*l2*np.sin(theta2)*y2_dot],
+         [m2*l1*l2*np.sin(theta2)*y1_dot,0]])
+    print(C.shape)
+    T = np.array([[-m1*g*l1*s1-m2*g*(l1*s1+l2*np.sin(theta1+theta2))],[-m2*g*l2*np.sin(theta1+theta2)]])
+    print(T.shape)
+    B = np.array([[0],[1]])
+    print(B.shape)
+    d2y = np.matmul(np.linalg.inv(M),T+np.matmul(B,u)-np.matmul(C,[[y1_dot],[y2_dot]]))
+    return np.array([y1_dot,y2_dot,d2y[0][0],d2y[1][0]])
+```
+
+### Optimal Equation Formulation
+
+we use multiple shooting method that means we put state and the control input u as decision variable and use the dynamics equation as constraints
+
+we want to minimize the cost function
+
+```         
+ L =  0.5*(u)**2 + 100*(MX.cos(theta1)+1)**2+100*(MX.cos(theta2)+1)**2+10*dtheta1**2+10*dtheta2**2
+```
+
+subject to
+
+$\dot x-f(x,u)=0$
+
+or if we discretize using RK4 at $t_n$ we get
+
+$X_{n+1} -g(X_{n},u)=0$
+
+### Code
+
+we use CASADI as the program to solve this NLP. I recommend watching this tutorial video from the creater of Casadi,Joris Gillis to know how to use it <https://www.youtube.com/watch?v=ANicKS8gKdM>
+
+first create the dynamics in casadi matrix form
+
+```         
+def deriv(y,t,u,l):
+    theta1 = y[0]
+    theta2 = y[1]
+    y1_dot = y[2]
+    y2_dot = y[3]
+    g = 9.81
+    s1 = MX.sin(theta1)
+
+    M = MX(2,2)
+    M[0,0] = I1+I2+m2*l1**2+2*m2*l1*l2*MX.cos(theta2)
+    M[0,1] = I2+m2*l1*l2*MX.cos(theta2)
+    M[1,0] = I2+m2*l1*l2*MX.cos(theta2)
+    M[1,1] = I2
+    
+    C = MX(2,2)
+    C[0,0] = -2*m2*l1*l2*MX.sin(theta2)*y2_dot
+    C[0,1] = -m2*l1*l2*MX.sin(theta2)*y2_dot
+    C[1,0] = m2*l1*l2*MX.sin(theta2)*y1_dot
+    C[1,1] = 0
+
+    T = MX(2,1)
+    T[0,0] = -m1*g*l1*s1-m2*g*(l1*s1+l2*MX.sin(theta1+theta2))
+    T[1,0] = -m2*g*l2*MX.sin(theta1+theta2)
+   
+    B = MX(2,1)
+    B[0,0] = 0
+    B[1,0] = 1
+    
+    y_dot = MX(2,1)
+    y_dot[0,0]=y1_dot 
+    y_dot[1,0] = y2_dot
+
+    d2y = solve(M,T+mtimes(B,u)-mtimes(C,y_dot))
+    return y1_dot,y2_dot,d2y[0][0],d2y[1][0]
+```
+
+Then define and set the optimal control problem
+
+x_k = state at Kth time step; 4x1 matrix
+
+u_k = torque at Kth time step; 1x1 matrix
+
+lbw = lower limit on decision variable
+
+ubw = upper limit on decision variable
+
+w0 = initial guess on the state
+
+lbg = constraints lower limit
+
+ubg = constraints upper limit
+
+```         
+w=[]
+w0 = []
+lbw = []
+ubw = []
+J = 0
+g=[]
+lbg = []
+ubg = []
+
+# "Lift" initial conditions
+Xk = MX.sym('X0', 4)
+w += [Xk]
+lbw += [0.1, 0.0,0,0]
+ubw += [0.1, 0.0,0,0]
+w0 += [0.1, 0.0,0,0]
+
+# Formulate the NLP
+for k in range(N):
+    # New NLP variable for the control
+    Uk = MX.sym('U_' + str(k))
+    w   += [Uk]
+    lbw += [-inf]
+    ubw += [inf]
+    w0  += [0]
+
+    # Integrate till the end of the interval
+    Fk = F(x0=Xk, u=Uk)
+    Xk_end = Fk['xf']
+    J=J+Fk['qf']
+
+    # New NLP variable for state at end of interval
+    Xk = MX.sym('X_' + str(k+1), 4)
+    w   += [Xk]
+    lbw += [-inf, -inf,-inf,-inf]
+    ubw += [ inf,inf,inf,inf]
+    w0  += [0,0,0,0]
+
+    # Add equality constraint
+    g   += [Xk_end-Xk]
+    lbg += [0, 0,0,0]
+    ubg += [0, 0,0,0]
+
+# Create an NLP solver
+prob = {'f': J, 'x': vertcat(*w), 'g': vertcat(*g)}
+solver = nlpsol('solver', 'ipopt', prob)
+
+
+sol = solver(x0=w0, lbx=lbw, ubx=ubw, lbg=lbg, ubg=ubg)
+w_opt = sol['x'].full().flatten()
+
+# Plot the solution
+x1_opt = w_opt[0::5]
+x2_opt = w_opt[1::5]
+x3_opt = w_opt[2::5]
+x4_opt = w_opt[3::5]
+u_opt = w_opt[4::5]
+```
+
+### Animate optimal states
+
+```         
+fig = plt.figure(figsize=(8.33,6.25),dpi=72)
+ax = fig.add_subplot(111)
+y = [math.pi/3,math.pi/2,0,0]
+x1 = math.sin(y[0])
+y1 = - math.cos(y[0])
+x2 = x1+math.sin(y[1])
+y2 = y1-math.cos(y[1])
+line, = ax.plot([0,x1,x2],[0,y1,y2],lw=2,c='k')
+r=0.05
+c1 = Circle((x1,y1),r,fc='b',ec='b',zorder=10)
+c2 = Circle((x2,y2),r,fc='b',ec='b',zorder=10)
+circle1 = ax.add_patch(c1)
+circle2  = ax.add_patch(c2)
+ns=20
+ax.set_xlim(-5, 5)
+ax.set_ylim(-5, 5)
+
+
+
+def animate(i):
+    x1 = math.sin(y_track[i,0])
+    y1 = - math.cos(y_track[i,0])
+    x2 = x1+math.sin(y_track[i,1])
+    y2 = y1-math.cos(y_track[i,1])
+    line.set_data([0,x1,x2],[0,y1,y2])
+    circle1.set_center((x1,y1))
+    circle2.set_center((x2,y2))
+    
+y_init = [0.1,0,0,0]
+X = y_init
+t = [0,0.1]
+
+y_track=np.array([y_init for i in range(100)])
+print(y_track.shape)
+for i in range(0,99):
+    y_track[i,:] = [x1_opt[i],x2_opt[i],x3_opt[i],x4_opt[i]]
+    
+
+ani = animation.FuncAnimation(fig, animate,frames=99,interval=100)
+#plt.show()
+FFwriter = animation.FFMpegWriter(fps=10)
+ani.save('animation.mp4', writer = FFwriter)
+```
