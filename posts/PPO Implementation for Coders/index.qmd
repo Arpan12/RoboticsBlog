@@ -3,7 +3,7 @@ title: "PPO Implementation for Coders"
 author: "Arpan Pallar"
 date: "2023-06-14"
 categories: [RL, Code, Python]
-image: "Pendulum.gif"
+image: "PendulumOnCart.png"
 ---
 
 PPO is state of the art algorithm for DeepRL. We ll see how this can be implemented in code(<https://github.com/Arpan12/Reinforcement-Learning-Algos/blob/main/PPO_Discrete.ipynb>)
@@ -13,6 +13,10 @@ We wont go in depth into theory but focus on implementation.
 # Promise
 
 After reading till the end of the blog, you should be able to implement PPO for **discrete action space** based environments.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dczdpI-Ucso" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+
+</iframe>
 
 # Theory
 
